@@ -1,21 +1,18 @@
-import { DefaultSession } from "next-auth";
+import NextAuth from "next-auth";
 
 declare module "next-auth" {
+  interface User {
+    id: string;
+    verified: boolean;
+    membershipTier: string;
+  }
+
   interface Session {
-    user: {
+    user: User & {
       id: string;
       verified: boolean;
       membershipTier: string;
-    } & DefaultSession["user"];
-  }
-
-  interface User {
-    id: string;
-    email: string;
-    name: string | null;
-    image: string | null;
-    verified: boolean;
-    membershipTier: string;
+    };
   }
 }
 
