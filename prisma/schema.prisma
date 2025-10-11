@@ -7,34 +7,75 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ============================================
+// USER & AUTH MODELS
+// ============================================
+
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  emailVerified DateTime?
-  username      String?   @unique
-  password      String
-  name          String?
-  image         String?
-  bio           String?
+  id                String    @id @default(cuid())
+  email             String    @unique
+  emailVerified     DateTime?
+  username          String?   @unique
+  password          String
+  name              String?
+  avatar            String?
+  bio               String?
+  dateOfBirth       DateTime?
+  location          String?
   
-  // Verification
-  verified      Boolean   @default(false)
-  verificationLevel String @default("none") // none, basic, enhanced, premium
+  // User Type
+  accountType       AccountType @default(INDIVIDUAL)
+  lookingFor        String[]  // Array of what they're seeking
   
-  // Privacy settings
-  isPrivate     Boolean   @default(true)
-  ghostMode     Boolean   @default(false)
+  // Verification Status
+  verified          Boolean   @default(false)
+  verificationLevel VerificationLevel @default(NONE)
+  verifiedAt        DateTime?
+  idVerified        Boolean   @default(false)
+  photoVerified     Boolean   @default(false)
+  
+  // Privacy Settings
+  isPrivate         Boolean   @default(true)
+  ghostMode         Boolean   @default(false)
+  showOnline        Boolean   @default(true)
+  showLocation      Boolean   @default(false)
+  allowMessages     MessagePermission @default(VERIFIED_ONLY)
+  
+  // Membership
+  membershipTier    MembershipTier @default(FREE)
+  membershipExpiry  DateTime?
+  
+  // Safety & Moderation
+  isBanned          Boolean   @default(false)
+  bannedAt          DateTime?
+  banReason         String?
+  reportCount       Int       @default(0)
+  trustScore        Float     @default(0.5)
   
   // Timestamps
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  lastActive        DateTime  @default(now())
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
   
   // Relations
-  accounts      Account[]
-  sessions      Session[]
+  accounts          Account[]
+  sessions          Session[]
+  photos            Photo[]
+  sentMessages      Message[] @relation("SentMessages")
+  receivedMessages  Message[] @relation("ReceivedMessages")
+  interests         Interest[]
+  blockedUsers      Block[]   @relation("BlockedBy")
+  blockedByUsers    Block[]   @relation("Blocked")
+  reportsMade       Report[]  @relation("Reporter")
+  reportsReceived   Report[]  @relation("Reported")
+  likes             Like[]
+  matches           Match[]   @relation("UserMatches")
+  matchedWith       Match[]   @relation("MatchedWith")
   
   @@index([email])
   @@index([username])
+  @@index([membershipTier])
+  @@index([verificationLevel])
 }
 
 model Account {
@@ -54,6 +95,7 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Session {
@@ -62,6 +104,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
 }
 
 model VerificationToken {
@@ -70,4 +114,199 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+// ============================================
+// CONTENT MODELS
+// ============================================
+
+model Photo {
+  id          String   @id @default(cuid())
+  userId      String
+  url         String
+  thumbnail   String?
+  isPrivate   Boolean  @default(false)
+  isVerification Boolean @default(false)
+  isPrimary   Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([isPrimary])
+}
+
+model Interest {
+  id        String   @id @default(cuid())
+  userId    String
+  category  String
+  name      String
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@index([category])
+}
+
+// ============================================
+// MESSAGING MODELS
+// ============================================
+
+model Message {
+  id         String      @id @default(cuid())
+  senderId   String
+  receiverId String
+  content    String
+  isRead     Boolean     @default(false)
+  readAt     DateTime?
+  createdAt  DateTime    @default(now())
+  
+  sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  
+  @@index([senderId])
+  @@index([receiverId])
+  @@index([createdAt])
+}
+
+// ============================================
+// MATCHING & CONNECTIONS
+// ============================================
+
+model Match {
+  id          String   @id @default(cuid())
+  userId      String
+  matchedId   String
+  status      MatchStatus @default(PENDING)
+  initiatedBy String
+  createdAt   DateTime @default(now())
+  matchedAt   DateTime?
+  
+  user    User @relation("UserMatches", fields: [userId], references: [id], onDelete: Cascade)
+  matched User @relation("MatchedWith", fields: [matchedId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, matchedId])
+  @@index([userId])
+  @@index([matchedId])
+  @@index([status])
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  likedId   String
+  createdAt DateTime @default(now())
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, likedId])
+  @@index([userId])
+  @@index([likedId])
+}
+
+// ============================================
+// SAFETY & MODERATION
+// ============================================
+
+model Block {
+  id         String   @id @default(cuid())
+  blockerId  String
+  blockedId  String
+  reason     String?
+  createdAt  DateTime @default(now())
+  
+  blocker User @relation("BlockedBy", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked User @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+}
+
+model Report {
+  id          String       @id @default(cuid())
+  reporterId  String
+  reportedId  String
+  reason      ReportReason
+  description String?
+  status      ReportStatus @default(PENDING)
+  reviewedBy  String?
+  reviewedAt  DateTime?
+  createdAt   DateTime     @default(now())
+  
+  reporter User @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
+  reported User @relation("Reported", fields: [reportedId], references: [id], onDelete: Cascade)
+  
+  @@index([reporterId])
+  @@index([reportedId])
+  @@index([status])
+}
+
+// ============================================
+// WAITLIST (For Launch)
+// ============================================
+
+model Waitlist {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  invited   Boolean  @default(false)
+  invitedAt DateTime?
+  
+  @@index([email])
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum AccountType {
+  INDIVIDUAL
+  COUPLE
+  GROUP
+}
+
+enum VerificationLevel {
+  NONE
+  BASIC      // Email + Phone
+  ENHANCED   // + ID Verification
+  PREMIUM    // + Background Check
+}
+
+enum MembershipTier {
+  FREE
+  PREMIUM
+  VIP
+}
+
+enum MessagePermission {
+  EVERYONE
+  VERIFIED_ONLY
+  MATCHES_ONLY
+  NOBODY
+}
+
+enum MatchStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+}
+
+enum ReportReason {
+  HARASSMENT
+  FAKE_PROFILE
+  INAPPROPRIATE_CONTENT
+  SPAM
+  UNDERAGE
+  OTHER
+}
+
+enum ReportStatus {
+  PENDING
+  REVIEWING
+  RESOLVED
+  DISMISSED
 }
