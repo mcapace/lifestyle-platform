@@ -34,8 +34,8 @@ export default function LoginPage() {
 
       router.push("/dashboard");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
@@ -93,7 +93,7 @@ export default function LoginPage() {
             </Button>
 
             <p className="text-center text-sm text-stone-500">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link href="/signup" className="text-amber-500 hover:text-amber-400">
                 Sign up
               </Link>

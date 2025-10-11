@@ -35,7 +35,7 @@ export function Testimonials() {
                 ))}
               </div>
               <p className="text-stone-300 mb-4 leading-relaxed italic">
-                "{testimonial.quote}"
+                &ldquo;{testimonial.quote}&rdquo;
               </p>
               <p className="text-stone-500 text-sm">
                 — {testimonial.author}, {testimonial.location}

@@ -56,8 +56,8 @@ export default function SignupPage() {
 
       router.push("/dashboard");
       router.refresh();
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
     } finally {
       setLoading(false);
     }
