@@ -4,19 +4,19 @@
 
 @layer base {
   :root {
-    --background: 250 250 250; /* #FAFAFA */
-    --foreground: 26 26 26; /* #1A1A1A */
+    --background: 250 250 250;
+    --foreground: 26 26 26;
     --card: 26 26 26;
     --card-foreground: 250 250 250;
     --popover: 26 26 26;
     --popover-foreground: 250 250 250;
     --primary: 26 26 26;
     --primary-foreground: 250 250 250;
-    --secondary: 125 78 87; /* #7D4E57 */
+    --secondary: 125 78 87;
     --secondary-foreground: 250 250 250;
-    --muted: 47 79 79; /* #2F4F4F */
+    --muted: 47 79 79;
     --muted-foreground: 168 168 168;
-    --accent: 201 168 105; /* #C9A869 */
+    --accent: 201 168 105;
     --accent-foreground: 26 26 26;
     --destructive: 239 68 68;
     --destructive-foreground: 250 250 250;
@@ -27,8 +27,25 @@
   }
 
   .dark {
-    --background: 24 24 27; /* zinc-900 */
+    --background: 24 24 27;
     --foreground: 250 250 250;
+    --card: 24 24 27;
+    --card-foreground: 250 250 250;
+    --popover: 24 24 27;
+    --popover-foreground: 250 250 250;
+    --primary: 250 250 250;
+    --primary-foreground: 26 26 26;
+    --secondary: 125 78 87;
+    --secondary-foreground: 250 250 250;
+    --muted: 47 79 79;
+    --muted-foreground: 168 168 168;
+    --accent: 201 168 105;
+    --accent-foreground: 26 26 26;
+    --destructive: 239 68 68;
+    --destructive-foreground: 250 250 250;
+    --border: 39 39 42;
+    --input: 39 39 42;
+    --ring: 201 168 105;
   }
 }
 
@@ -41,4 +58,3 @@
     color: hsl(var(--foreground));
   }
 }
-
