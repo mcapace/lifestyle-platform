@@ -1,5 +1,5 @@
 import { NavbarBold } from "@/components/landing/navbar-bold";
-import { HeroLaunch } from "@/components/landing/hero-launch";
+import { HeroBold } from "@/components/landing/hero-bold";
 import { Manifesto } from "@/components/landing/manifesto";
 import { ComingSoon } from "@/components/landing/coming-soon";
 import { Team } from "@/components/landing/team";
@@ -11,7 +11,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       <NavbarBold />
-      <HeroLaunch />
+      <HeroBold />
       <Manifesto />
       <ComingSoon />
       <Team />
