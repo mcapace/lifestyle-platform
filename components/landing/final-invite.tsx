@@ -63,7 +63,7 @@ export function FinalInvite() {
           </h2>
 
           <p className="text-xl text-neutral-400 font-light mb-12">
-            Limited access. Opening Q1 2025.
+            Limited access. Opening Q4 2025.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">

@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 
 const partners = [
-  "Coming Q1 2025",
+  "Coming Q4 2025",
   "Privacy First",
   "End-to-End Encrypted",
   "Verified Community",

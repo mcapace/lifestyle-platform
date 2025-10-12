@@ -51,7 +51,7 @@ export function TechStack() {
             Built With Modern Technology
           </h2>
           <p className="text-lg text-neutral-500 font-light">
-            Not a legacy platform with a facelift. Built from the ground up for 2025.
+            Not a legacy platform with a facelift. Built from the ground up.
           </p>
         </motion.div>
 

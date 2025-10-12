@@ -135,7 +135,7 @@ export function EarlyAccess() {
               </MagneticButton>
 
               <p className="text-xs text-neutral-600 font-light text-center">
-                We&apos;ll notify you when we launch in Q1 2025
+                We&apos;ll notify you when we launch in Q4 2025
               </p>
             </div>
           </motion.div>

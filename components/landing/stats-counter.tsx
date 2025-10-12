@@ -64,7 +64,7 @@ export function StatsCounter() {
           className="text-center space-y-8"
         >
           <h2 className="text-3xl md:text-4xl font-light text-white">
-            Launching Q1 2025
+            Launching Q4 2025
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
             <div className="text-center">

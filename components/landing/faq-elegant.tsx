@@ -15,7 +15,7 @@ const faqs = [
   },
   {
     question: "What makes this different from other platforms?",
-    answer: "We're built from the ground up for 2025. Native iOS and Android apps (not a wrapped website). Real verification (not optional). Curated community (quality over quantity). Modern design that doesn't look like it's from the 90s."
+    answer: "We're built from the ground up for modern expectations. Native iOS and Android apps (not a wrapped website). Real verification (not optional). Curated community (quality over quantity). Modern design that doesn't look like it's from the 90s."
   },
   {
     question: "Is this just for couples?",
@@ -23,7 +23,7 @@ const faqs = [
   },
   {
     question: "When does it launch?",
-    answer: "Q1 2025. Join the waitlist now to get founding member status, 50% off lifetime pricing, and priority access when we launch."
+    answer: "Q4 2025. Join the waitlist now to get founding member status, 50% off lifetime pricing, and priority access when we launch."
   },
   {
     question: "How do you prevent fake profiles?",

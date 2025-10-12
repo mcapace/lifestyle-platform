@@ -17,7 +17,7 @@ export function FooterRefined() {
               <span className="text-brand-500 italic">Elevated.</span>
             </div>
             <p className="text-sm text-neutral-500 font-light leading-relaxed mb-6">
-              A private community for those who seek more. Launching Q1 2025.
+              A private community for those who seek more. Launching Q4 2025.
             </p>
             
             {/* Social Links */}

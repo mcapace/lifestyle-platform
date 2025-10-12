@@ -107,7 +107,7 @@ export function Channels() {
           className="text-center mt-16"
         >
           <p className="text-sm text-neutral-600 font-light">
-            Launching Q1 2025 • Follow for exclusive early access opportunities
+            Launching Q4 2025 • Follow for exclusive early access opportunities
           </p>
         </motion.div>
       </div>
