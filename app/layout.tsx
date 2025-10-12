@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Cormorant_Garamond, Sora } from "next/font/google";
+import { Inter, Cormorant_Garamond, Sora, Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({ 
@@ -18,9 +18,21 @@ const sora = Sora({
   variable: "--font-sora",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair",
+});
+
+const dmSans = DM_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-dm-sans",
+});
+
 export const metadata: Metadata = {
-  title: "[Brand] - The Lifestyle. Elevated.",
-  description: "A verified community where sophistication meets authentic connection.",
+  title: "Lifestyle Platform - Where Sophistication Meets Connection",
+  description: "A verified community built on authenticity, privacy, and genuine human connection.",
 };
 
 export default function RootLayout({
@@ -30,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${cormorant.variable} ${sora.variable} font-sans antialiased`}>
+      <body className={`${dmSans.variable} ${playfair.variable} ${inter.variable} ${cormorant.variable} ${sora.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>
