@@ -62,7 +62,7 @@ export function HeroLaunch() {
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{
-            backgroundImage: `url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=80')`,
+            backgroundImage: `url('/images/AdobeStock_216584147.jpeg')`,
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/70" />
