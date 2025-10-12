@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { Instagram, Twitter, Mail } from "lucide-react";
+import { InstagramLogo, TwitterLogo, EnvelopeSimple } from "@phosphor-icons/react";
 
 export function FooterRefined() {
   return (
@@ -25,20 +27,20 @@ export function FooterRefined() {
                 target="_blank"
                 className="w-10 h-10 bg-neutral-900 hover:bg-brand-500/20 border border-neutral-800 hover:border-brand-500/30 flex items-center justify-center transition-all group"
               >
-                <Instagram className="w-4 h-4 text-neutral-500 group-hover:text-brand-500 transition-colors" />
+                <InstagramLogo weight="fill" size={18} className="text-neutral-500 group-hover:text-brand-500 transition-colors" />
               </Link>
               <Link
                 href="https://twitter.com/lifestyleapp"
                 target="_blank"
                 className="w-10 h-10 bg-neutral-900 hover:bg-brand-500/20 border border-neutral-800 hover:border-brand-500/30 flex items-center justify-center transition-all group"
               >
-                <Twitter className="w-4 h-4 text-neutral-500 group-hover:text-brand-500 transition-colors" />
+                <TwitterLogo weight="fill" size={18} className="text-neutral-500 group-hover:text-brand-500 transition-colors" />
               </Link>
               <Link
                 href="mailto:hello@lifestyle.app"
                 className="w-10 h-10 bg-neutral-900 hover:bg-brand-500/20 border border-neutral-800 hover:border-brand-500/30 flex items-center justify-center transition-all group"
               >
-                <Mail className="w-4 h-4 text-neutral-500 group-hover:text-brand-500 transition-colors" />
+                <EnvelopeSimple weight="fill" size={18} className="text-neutral-500 group-hover:text-brand-500 transition-colors" />
               </Link>
             </div>
           </div>

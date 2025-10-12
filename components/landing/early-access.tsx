@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { CheckCircle } from "@phosphor-icons/react";
 import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -80,8 +81,8 @@ export function EarlyAccess() {
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                   className="flex items-start gap-3"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 rounded-full bg-brand-500/20 flex items-center justify-center mt-0.5">
-                    <Check className="w-4 h-4 text-brand-500" />
+                  <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center mt-0.5">
+                    <CheckCircle weight="fill" size={24} className="text-brand-500" />
                   </div>
                   <span className="text-base text-neutral-300 font-light">
                     {perk}

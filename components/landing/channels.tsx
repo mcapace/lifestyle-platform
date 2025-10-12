@@ -1,33 +1,33 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Mail, Instagram, Twitter, MessageCircle } from "lucide-react";
+import { EnvelopeSimple, InstagramLogo, TwitterLogo, DiscordLogo } from "@phosphor-icons/react";
 import Link from "next/link";
 
 const channels = [
   {
-    icon: Instagram,
+    icon: InstagramLogo,
     label: "Instagram",
     handle: "@lifestyle.elevated",
     href: "https://instagram.com/lifestyle.elevated",
     description: "Behind the scenes"
   },
   {
-    icon: Twitter,
+    icon: TwitterLogo,
     label: "Twitter",
     handle: "@lifestyleapp",
     href: "https://twitter.com/lifestyleapp",
     description: "Updates & insights"
   },
   {
-    icon: Mail,
+    icon: EnvelopeSimple,
     label: "Email",
     handle: "hello@lifestyle.app",
     href: "mailto:hello@lifestyle.app",
     description: "Direct line"
   },
   {
-    icon: MessageCircle,
+    icon: DiscordLogo,
     label: "Community",
     handle: "Join Discord",
     href: "https://discord.gg/lifestyle",
@@ -72,8 +72,8 @@ export function Channels() {
               >
                 <div className="flex items-start gap-6">
                   {/* Icon */}
-                  <div className="flex-shrink-0 w-12 h-12 bg-brand-500/10 rounded-full flex items-center justify-center group-hover:bg-brand-500/20 transition-colors">
-                    <channel.icon className="w-6 h-6 text-brand-500" />
+                  <div className="flex-shrink-0 w-12 h-12 bg-brand-500/10 flex items-center justify-center group-hover:bg-brand-500/20 transition-colors">
+                    <channel.icon weight="fill" size={24} className="text-brand-500" />
                   </div>
 
                   {/* Content */}

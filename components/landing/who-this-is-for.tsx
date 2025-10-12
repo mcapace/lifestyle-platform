@@ -1,28 +1,32 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Users, Heart, Sparkles, Shield } from "lucide-react";
+import { UsersThree, Heart, Sparkle, ShieldCheck } from "@phosphor-icons/react";
 
 const personas = [
   {
     icon: Heart,
     title: "Curious Couples",
-    description: "Exploring swinging for the first time. Looking to spice things up. Ready to dip your toes into the lifestyle."
+    description: "Exploring swinging for the first time. Looking to spice things up. Ready to dip your toes into the lifestyle.",
+    weight: "fill" as const
   },
   {
-    icon: Users,
+    icon: UsersThree,
     title: "Experienced Lifestylers",
-    description: "Active in the scene. Attending events. Seeking quality connections with verified, like-minded people."
+    description: "Active in the scene. Attending events. Seeking quality connections with verified, like-minded people.",
+    weight: "fill" as const
   },
   {
-    icon: Sparkles,
+    icon: Sparkle,
     title: "Open Relationships",
-    description: "Polyamorous. Ethically non-monogamous. Building your chosen family. Finding your tribe."
+    description: "Polyamorous. Ethically non-monogamous. Building your chosen family. Finding your tribe.",
+    weight: "fill" as const
   },
   {
-    icon: Shield,
+    icon: ShieldCheck,
     title: "Discreet Explorers",
-    description: "Privacy is paramount. Professional life, personal desires. Need absolute discretion and security."
+    description: "Privacy is paramount. Professional life, personal desires. Need absolute discretion and security.",
+    weight: "fill" as const
   }
 ];
 
@@ -57,8 +61,8 @@ export function WhoThisIsFor() {
               className="group relative p-8 bg-black/50 border border-neutral-800 hover:border-brand-500/30 transition-all duration-300"
             >
               {/* Icon */}
-              <div className="inline-flex items-center justify-center w-12 h-12 bg-brand-500/10 rounded-full mb-6 group-hover:bg-brand-500/20 transition-colors">
-                <persona.icon className="w-6 h-6 text-brand-500" />
+              <div className="inline-flex items-center justify-center w-14 h-14 bg-brand-500/10 mb-6 group-hover:bg-brand-500/20 transition-colors">
+                <persona.icon weight={persona.weight} size={28} className="text-brand-500" />
               </div>
 
               {/* Content */}

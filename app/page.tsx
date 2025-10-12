@@ -4,8 +4,8 @@ import { Intrigue } from "@/components/landing/intrigue";
 import { NarrativeSection } from "@/components/landing/narrative-section";
 import { WhoThisIsFor } from "@/components/landing/who-this-is-for";
 import { WhatMakesUsDifferent } from "@/components/landing/what-makes-us-different";
+import { TechStack } from "@/components/landing/tech-stack";
 import { Principles } from "@/components/landing/principles";
-import { SocialProof } from "@/components/landing/social-proof";
 import { EarlyAccess } from "@/components/landing/early-access";
 import { Channels } from "@/components/landing/channels";
 import { FooterRefined } from "@/components/landing/footer-refined";
@@ -22,8 +22,8 @@ export default function HomePage() {
       <NarrativeSection />
       <WhoThisIsFor />
       <WhatMakesUsDifferent />
+      <TechStack />
       <Principles />
-      <SocialProof />
       <EarlyAccess />
       <Channels />
       <FooterRefined />
