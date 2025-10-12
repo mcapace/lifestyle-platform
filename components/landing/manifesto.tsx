@@ -13,19 +13,18 @@ export function Manifesto() {
           transition={{ duration: 1 }}
         >
           <h2 className="text-5xl md:text-7xl font-light text-white leading-tight mb-12">
-            Adult Friend Finder
+            The lifestyle community
             <br />
-            hasn&apos;t changed
+            deserves platforms
             <br />
-            <span className="text-brand-500 italic">in 20 years.</span>
+            <span className="text-brand-500 italic">built for 2025.</span>
           </h2>
 
           <p className="text-2xl md:text-3xl text-neutral-400 font-light leading-relaxed">
-            We&apos;re building what comes next.
+            Not relics from the past.
           </p>
         </motion.div>
       </div>
     </section>
   );
 }
-

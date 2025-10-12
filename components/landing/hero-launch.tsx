@@ -104,7 +104,7 @@ export function HeroLaunch() {
               transition={{ delay: 0.8, duration: 0.8 }}
               className="text-xl md:text-2xl text-white/90 mb-12 font-light"
             >
-              The verified community built for 2025.
+              Where verification meets sophistication.
             </motion.p>
 
             {/* Email form - clean */}

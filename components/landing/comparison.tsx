@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import { X, Check } from "lucide-react";
 
 const comparison = [
-  { old: "1990s interface", new: "Modern design" },
-  { old: "Bots & scammers", new: "Verified members" },
-  { old: "Your data sold", new: "End-to-end encrypted" },
-  { old: "No moderation", new: "AI + human safety" },
-  { old: "Hidden fees", new: "Transparent pricing" },
+  { old: "Outdated interfaces", new: "Modern, intuitive design" },
+  { old: "Questionable profiles", new: "Multi-layer verification" },
+  { old: "Privacy concerns", new: "End-to-end encryption" },
+  { old: "Limited moderation", new: "AI + human safety team" },
+  { old: "Hidden costs", new: "Transparent pricing" },
 ];
 
 export function Comparison() {
@@ -22,7 +22,7 @@ export function Comparison() {
           className="mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-light text-white mb-4">
-            The Difference
+            A New Standard
           </h2>
           <div className="h-px w-24 bg-brand-500" />
         </motion.div>
@@ -57,8 +57,20 @@ export function Comparison() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="mt-16 text-center"
+        >
+          <p className="text-xl text-neutral-500 font-light">
+            The industry hasn&apos;t evolved.
+            <br />
+            <span className="text-white">We&apos;re changing that.</span>
+          </p>
+        </motion.div>
       </div>
     </section>
   );
 }
-
