@@ -74,13 +74,13 @@ export function HeroRefined() {
               Launching Soon
             </motion.div>
 
-            <h1 className="text-6xl md:text-7xl font-light text-white mb-6 leading-tight">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-light text-white mb-6 leading-[1.1] tracking-tight">
               The Lifestyle.
               <br />
-              <span className="text-brand-500">Elevated.</span>
+              <span className="font-normal text-brand-500">Elevated.</span>
             </h1>
 
-            <p className="text-xl text-neutral-400 mb-8 leading-relaxed max-w-lg">
+            <p className="text-lg md:text-xl text-neutral-400 mb-8 leading-relaxed max-w-lg font-light">
               A verified community where sophistication meets authentic
               connection. Your privacy. Your terms.
             </p>
@@ -99,7 +99,7 @@ export function HeroRefined() {
               <Button
                 onClick={handleWaitlist}
                 disabled={loading}
-                className="h-12 px-8 bg-brand-500 hover:bg-brand-600 text-white"
+                className="h-12 px-8 bg-brand-500 hover:bg-brand-600 text-white font-medium rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-brand-500/20"
               >
                 {loading ? "Joining..." : "Join Waitlist"}
                 <ArrowRight className="ml-2 w-4 h-4" />
@@ -116,24 +116,37 @@ export function HeroRefined() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative"
+            className="relative hidden lg:block"
           >
-            {/* Placeholder for phone mockup or lifestyle image */}
             <div className="relative aspect-[3/4] max-w-md mx-auto">
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-neutral-900/20 rounded-3xl backdrop-blur-sm border border-white/10" />
-              <div className="absolute inset-0 flex items-center justify-center text-neutral-600">
-                {/* Replace with actual image */}
-                <div className="text-center">
-                  <p className="text-sm">Hero Image</p>
-                  <p className="text-xs text-neutral-700 mt-2">
-                    Place high-quality lifestyle photography here
-                  </p>
-                </div>
+              {/* Sophisticated lifestyle imagery */}
+              <div className="absolute inset-0 bg-gradient-to-br from-neutral-800 to-neutral-900 rounded-3xl overflow-hidden">
+                {/* Hero image */}
+                <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1545696968-1a5245650b36?w=800&q=80')] bg-cover bg-center opacity-40" />
+                
+                {/* Overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-transparent" />
+                
+                {/* Floating card element for visual interest */}
+                <motion.div
+                  initial={{ y: 20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.8, duration: 0.6 }}
+                  className="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-10 h-10 bg-brand-500 rounded-full" />
+                    <div className="w-10 h-10 bg-brand-400 rounded-full -ml-4" />
+                    <div className="w-10 h-10 bg-brand-300 rounded-full -ml-4" />
+                  </div>
+                  <p className="text-white text-sm font-medium mb-1">2,847 verified members</p>
+                  <p className="text-neutral-400 text-xs">joined this week</p>
+                </motion.div>
               </div>
+              
+              {/* Subtle glow */}
+              <div className="absolute -inset-4 bg-brand-500/5 blur-3xl -z-10" />
             </div>
-
-            {/* Subtle glow */}
-            <div className="absolute -inset-4 bg-brand-500/10 blur-3xl -z-10 rounded-full" />
           </motion.div>
         </div>
       </div>

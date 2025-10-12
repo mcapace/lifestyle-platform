@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond, Sora, Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
+import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -43,7 +44,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={`${dmSans.variable} ${playfair.variable} ${inter.variable} ${cormorant.variable} ${sora.variable} font-sans antialiased`}>
-        {children}
+        <SmoothScrollProvider>
+          {children}
+        </SmoothScrollProvider>
       </body>
     </html>
   );
