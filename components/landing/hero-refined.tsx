@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight } from "@phosphor-icons/react";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
@@ -15,8 +15,7 @@ export function HeroRefined() {
   async function handleWaitlist() {
     if (!email || !email.includes("@")) {
       toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
+        title: "Please enter a valid email",
         variant: "destructive",
       });
       return;
@@ -35,8 +34,8 @@ export function HeroRefined() {
 
       if (res.ok) {
         toast({
-          title: "Welcome",
-          description: "You're on the list. We'll be in touch soon.",
+          title: "You're on the list",
+          description: "We'll notify you when we launch.",
         });
         setEmail("");
       } else {
@@ -54,45 +53,40 @@ export function HeroRefined() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center bg-cream-50 dark:bg-zinc-950">
-      <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
-        {/* Left Column - Content */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="space-y-8"
-        >
-          {/* Badge */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="inline-block"
-          >
-            <span className="text-sm tracking-wide font-medium text-bronze-700 dark:text-bronze-400 bg-bronze-50 dark:bg-bronze-950/30 px-5 py-2 rounded-full border border-bronze-200 dark:border-bronze-900">
-              LAUNCHING SOON
-            </span>
-          </motion.div>
+    <section className="min-h-screen bg-neutral-950 relative overflow-hidden">
+      {/* Subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-neutral-950 via-neutral-900 to-neutral-950" />
 
-          {/* Headline */}
-          <div className="space-y-6">
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-serif leading-[1.1] text-zinc-900 dark:text-cream-50 tracking-tight">
-              Where sophistication meets connection.
+      <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          {/* Left: Content */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              className="inline-block px-3 py-1 bg-brand-500/10 border border-brand-500/20 rounded-full text-brand-500 text-sm mb-6"
+            >
+              Launching Soon
+            </motion.div>
+
+            <h1 className="text-6xl md:text-7xl font-light text-white mb-6 leading-tight">
+              The Lifestyle.
+              <br />
+              <span className="text-brand-500">Elevated.</span>
             </h1>
-            <p className="text-xl md:text-2xl text-zinc-600 dark:text-zinc-400 leading-relaxed font-light">
-              A verified community built on authenticity, privacy, and genuine human connection.
-            </p>
-          </div>
 
-          {/* Email Capture */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="space-y-4"
-          >
-            <div className="flex flex-col sm:flex-row gap-3 max-w-md">
+            <p className="text-xl text-neutral-400 mb-8 leading-relaxed max-w-lg">
+              A verified community where sophistication meets authentic
+              connection. Your privacy. Your terms.
+            </p>
+
+            {/* Email form */}
+            <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Input
                 type="email"
                 value={email}
@@ -100,60 +94,48 @@ export function HeroRefined() {
                 onKeyPress={(e) => e.key === "Enter" && handleWaitlist()}
                 placeholder="Enter your email"
                 disabled={loading}
-                className="flex-1 h-12 px-4 text-base bg-white dark:bg-zinc-900 border-bronze-200 dark:border-bronze-900 focus:border-bronze-500 dark:focus:border-bronze-600 rounded-lg"
+                className="h-12 bg-neutral-900 border-neutral-800 text-white placeholder-neutral-600 focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
               />
               <Button
                 onClick={handleWaitlist}
                 disabled={loading}
-                className="h-12 px-8 bg-bronze-700 hover:bg-bronze-800 dark:bg-bronze-600 dark:hover:bg-bronze-700 text-cream-50 font-medium rounded-lg transition-all"
+                className="h-12 px-8 bg-brand-500 hover:bg-brand-600 text-white"
               >
                 {loading ? "Joining..." : "Join Waitlist"}
-                <ArrowRight className="ml-2 w-4 h-4" weight="bold" />
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
             </div>
-            <p className="text-sm text-zinc-500 dark:text-zinc-600 font-light">
-              Join 1,000+ curious individuals on the waitlist
+
+            <p className="text-sm text-neutral-600">
+              No credit card required • Launch exclusive benefits
             </p>
           </motion.div>
 
-          {/* Trust Indicators */}
+          {/* Right: Visual */}
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex items-center gap-8 pt-4 border-t border-bronze-200 dark:border-bronze-900"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="relative"
           >
-            <div className="text-sm text-zinc-600 dark:text-zinc-400">
-              <div className="font-semibold text-zinc-900 dark:text-cream-100 mb-1">Verified only</div>
-              <div className="font-light">Real people, real connections</div>
-            </div>
-            <div className="h-12 w-px bg-bronze-200 dark:bg-bronze-900" />
-            <div className="text-sm text-zinc-600 dark:text-zinc-400">
-              <div className="font-semibold text-zinc-900 dark:text-cream-100 mb-1">Privacy first</div>
-              <div className="font-light">Your data stays yours</div>
-            </div>
-          </motion.div>
-        </motion.div>
-
-        {/* Right Column - Image */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-gradient-to-br from-bronze-100 via-cream-100 to-bronze-50 dark:from-bronze-950 dark:via-zinc-900 dark:to-bronze-950 shadow-2xl"
-        >
-          {/* Placeholder for high-quality image */}
-          <div className="absolute inset-0 flex items-center justify-center p-12">
-            <div className="text-center space-y-4">
-              <div className="text-bronze-600 dark:text-bronze-400 font-light text-sm tracking-widest">
-                HIGH-QUALITY LIFESTYLE PHOTOGRAPHY
+            {/* Placeholder for phone mockup or lifestyle image */}
+            <div className="relative aspect-[3/4] max-w-md mx-auto">
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-500/20 to-neutral-900/20 rounded-3xl backdrop-blur-sm border border-white/10" />
+              <div className="absolute inset-0 flex items-center justify-center text-neutral-600">
+                {/* Replace with actual image */}
+                <div className="text-center">
+                  <p className="text-sm">Hero Image</p>
+                  <p className="text-xs text-neutral-700 mt-2">
+                    Place high-quality lifestyle photography here
+                  </p>
+                </div>
               </div>
-              <p className="text-zinc-600 dark:text-zinc-400 text-sm font-light max-w-xs mx-auto leading-relaxed">
-                Authentic moments, real connections, sophisticated aesthetics
-              </p>
             </div>
-          </div>
-        </motion.div>
+
+            {/* Subtle glow */}
+            <div className="absolute -inset-4 bg-brand-500/10 blur-3xl -z-10 rounded-full" />
+          </motion.div>
+        </div>
       </div>
     </section>
   );

@@ -2,28 +2,46 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 export function NavbarRefined() {
   return (
-    <nav className="fixed top-0 w-full z-50 bg-cream-50/80 dark:bg-zinc-950/80 backdrop-blur-xl border-b border-bronze-200 dark:border-bronze-900">
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="fixed top-0 w-full z-50 bg-neutral-950/80 backdrop-blur-xl border-b border-neutral-900"
+    >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link href="/" className="text-2xl font-serif text-zinc-900 dark:text-cream-50 tracking-tight">
-          Lifestyle
+        <Link href="/" className="text-xl font-medium text-white">
+          [Brand]
         </Link>
-        <div className="flex gap-6 items-center">
+
+        <div className="flex gap-8 items-center">
           <Link
-            href="/login"
-            className="text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-bronze-700 dark:hover:text-bronze-400 transition-colors"
+            href="#features"
+            className="text-sm text-neutral-400 hover:text-white transition-colors hidden sm:block"
           >
-            Sign In
+            Features
+          </Link>
+          <Link
+            href="#safety"
+            className="text-sm text-neutral-400 hover:text-white transition-colors hidden sm:block"
+          >
+            Safety
+          </Link>
+          <Link href="/login">
+            <Button variant="ghost" className="text-neutral-400 hover:text-white">
+              Sign In
+            </Button>
           </Link>
           <Link href="/signup">
-            <Button className="bg-bronze-700 hover:bg-bronze-800 dark:bg-bronze-600 dark:hover:bg-bronze-700 text-cream-50 rounded-lg">
+            <Button className="bg-brand-500 hover:bg-brand-600 text-white">
               Get Started
             </Button>
           </Link>
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

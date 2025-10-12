@@ -1,19 +1,19 @@
 import { NavbarRefined } from "@/components/landing/navbar-refined";
 import { HeroRefined } from "@/components/landing/hero-refined";
-import { FeaturesRefined } from "@/components/landing/features-refined";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { TestimonialsRefined } from "@/components/landing/testimonials-refined";
+import { TrustRefined } from "@/components/landing/trust-refined";
+import { JourneyRefined } from "@/components/landing/journey-refined";
 import { FooterRefined } from "@/components/landing/footer-refined";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-neutral-950">
       <NavbarRefined />
       <HeroRefined />
-      <FeaturesRefined />
-      <HowItWorks />
-      <TestimonialsRefined />
+      <TrustRefined />
+      <JourneyRefined />
       <FooterRefined />
+      <Toaster />
     </div>
   );
 }
