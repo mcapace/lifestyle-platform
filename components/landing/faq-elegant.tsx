@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     question: "How do you prevent fake profiles?",
-    answer: "Every profile requires ID verification and live photo check. Our AI flags suspicious behavior. Single guys pretending to be couples? Caught. Catfish? Blocked. Bots? Eliminated. We have a 95% verification success rate."
+    answer: "Every profile requires ID verification and live photo check. Our AI flags suspicious behavior. Single guys pretending to be couples? Caught. Catfish? Blocked. Bots? Eliminated. Verification is mandatory, not optional."
   }
 ];
 

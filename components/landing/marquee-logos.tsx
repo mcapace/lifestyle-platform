@@ -3,14 +3,14 @@
 import { useEffect, useRef } from "react";
 
 const partners = [
-  "Featured in TechCrunch",
-  "Built by Y Combinator Alumni", 
-  "Backed by Top VCs",
-  "SOC 2 Compliant",
-  "GDPR Certified",
-  "256-bit Encryption",
-  "ISO 27001 Certified",
-  "Privacy First"
+  "Coming Q1 2025",
+  "Privacy First",
+  "End-to-End Encrypted",
+  "Verified Community",
+  "Native Mobile Apps",
+  "Built for the Lifestyle",
+  "No Fake Profiles",
+  "Your Data, Your Control"
 ];
 
 export function MarqueeLogos() {

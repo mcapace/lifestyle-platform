@@ -61,12 +61,37 @@ export function StatsCounter() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-12"
+          className="text-center space-y-8"
         >
-          <AnimatedStat end={10000} label="Waitlist Members" suffix="+" />
-          <AnimatedStat end={95} label="Verification Rate" suffix="%" />
-          <AnimatedStat end={24} label="Support Available" suffix="/7" />
-          <AnimatedStat end={100} label="Privacy Protected" suffix="%" />
+          <h2 className="text-3xl md:text-4xl font-light text-white">
+            Launching Q1 2025
+          </h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div className="text-center">
+              <div className="text-2xl font-light text-neutral-400 mb-2">
+                Multi-Layer
+              </div>
+              <div className="text-sm text-neutral-600 uppercase tracking-wider">
+                Verification
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-light text-neutral-400 mb-2">
+                End-to-End
+              </div>
+              <div className="text-sm text-neutral-600 uppercase tracking-wider">
+                Encryption
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-2xl font-light text-neutral-400 mb-2">
+                Native Apps
+              </div>
+              <div className="text-sm text-neutral-600 uppercase tracking-wider">
+                iOS & Android
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 import { NavbarBold } from "@/components/landing/navbar-bold";
 import { HeroLifestyle } from "@/components/landing/hero-lifestyle";
-import { StatsCounter } from "@/components/landing/stats-counter";
+import { RealWaitlistStats } from "@/components/landing/real-waitlist-stats";
 import { Intrigue } from "@/components/landing/intrigue";
 import { NarrativeSection } from "@/components/landing/narrative-section";
 import { WhoThisIsFor } from "@/components/landing/who-this-is-for";
@@ -21,7 +21,7 @@ export default function HomePage() {
       <FloatingElements />
       <NavbarBold />
       <HeroLifestyle />
-      <StatsCounter />
+      <RealWaitlistStats />
       <Intrigue />
       <NarrativeSection />
       <WhoThisIsFor />
