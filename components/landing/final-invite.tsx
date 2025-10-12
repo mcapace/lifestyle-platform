@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -76,14 +76,14 @@ export function FinalInvite() {
               disabled={loading}
               className="flex-1 h-14 bg-black/40 backdrop-blur-xl border-white/20 text-white placeholder-white/50"
             />
-            <Button
+            <MagneticButton
               onClick={handleWaitlist}
               disabled={loading}
               className="h-14 px-10 bg-white hover:bg-white/90 text-black font-medium"
             >
               {loading ? "..." : "Request"}
               <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
+            </MagneticButton>
           </div>
         </motion.div>
       </div>

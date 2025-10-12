@@ -1,24 +1,59 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { MagneticButton } from "@/components/ui/magnetic-button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import Image from "next/image";
+import { gsap } from "gsap";
 
 export function HeroLifestyle() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [waitlistCount, setWaitlistCount] = useState(0);
   const { toast } = useToast();
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0.3]);
 
   useEffect(() => {
     fetch("/api/waitlist/count")
       .then((res) => res.json())
       .then((data) => setWaitlistCount(data.count))
       .catch(() => setWaitlistCount(0));
+
+    // GSAP animations for enhanced interactions
+    const tl = gsap.timeline();
+    
+    tl.from(".hero-badge", {
+      y: 20,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.3,
+      ease: "power2.out"
+    })
+    .from(".hero-title", {
+      y: 40,
+      opacity: 0,
+      duration: 1,
+      ease: "power2.out"
+    }, "-=0.5")
+    .from(".hero-subtitle", {
+      y: 20,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.7")
+    .from(".hero-form", {
+      y: 30,
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.out"
+    }, "-=0.5");
+
   }, []);
 
   async function handleWaitlist() {
@@ -48,11 +83,11 @@ export function HeroLifestyle() {
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden">
-      {/* Full-bleed lifestyle image */}
-      <div className="absolute inset-0">
+    <section ref={containerRef} className="relative min-h-screen overflow-hidden">
+      {/* Full-bleed lifestyle image with parallax */}
+      <motion.div style={{ y }} className="absolute inset-0 scale-110">
         <Image
-          src="/images/AdobeStock_216584147.jpeg"
+          src="/hero2.jpeg"
           alt=""
           fill
           className="object-cover"
@@ -62,33 +97,23 @@ export function HeroLifestyle() {
         {/* Sophisticated overlay - not too dark */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-      </div>
+      </motion.div>
 
       {/* Content - left aligned, plenty of space */}
-      <div className="relative z-10 min-h-screen flex items-center">
+      <motion.div style={{ opacity }} className="relative z-10 min-h-screen flex items-center">
         <div className="max-w-7xl mx-auto px-6 py-20 w-full">
           <div className="max-w-2xl">
             {/* Small, elegant badge */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.6 }}
-              className="mb-8"
-            >
+            <div className="hero-badge mb-8">
               <div className="inline-block">
                 <div className="text-xs text-white/70 tracking-[0.3em] uppercase font-light">
                   Invitation Only
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Headline - huge, elegant */}
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
-              className="mb-8"
-            >
+            <h1 className="hero-title mb-8">
               <div className="text-7xl md:text-8xl lg:text-9xl font-light text-white leading-[0.9] tracking-tight mb-6">
                 The
                 <br />
@@ -97,25 +122,15 @@ export function HeroLifestyle() {
               <div className="text-5xl md:text-6xl lg:text-7xl text-brand-500 leading-[0.9] tracking-tight italic font-light">
                 Elevated.
               </div>
-            </motion.h1>
+            </h1>
 
             {/* Subhead - minimal */}
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
-              className="text-xl md:text-2xl text-white/90 mb-12 font-light max-w-lg leading-relaxed"
-            >
+            <p className="hero-subtitle text-xl md:text-2xl text-white/90 mb-12 font-light max-w-lg leading-relaxed">
               A private community for those who seek more.
-            </motion.p>
+            </p>
 
             {/* Email capture - elegant */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1, duration: 0.8 }}
-              className="space-y-4"
-            >
+            <div className="hero-form space-y-4">
               <div className="flex gap-2">
                 <Input
                   type="email"
@@ -126,14 +141,14 @@ export function HeroLifestyle() {
                   disabled={loading}
                   className="flex-1 h-14 bg-black/30 backdrop-blur-xl border-white/20 text-white text-base placeholder-white/50 focus:bg-black/40 focus:border-white/40"
                 />
-                <Button
+                <MagneticButton
                   onClick={handleWaitlist}
                   disabled={loading}
                   className="h-14 px-8 bg-white hover:bg-white/90 text-black font-medium"
                 >
                   {loading ? "..." : "Request Invite"}
                   <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
+                </MagneticButton>
               </div>
 
               {/* Waitlist count - social proof */}
@@ -147,10 +162,10 @@ export function HeroLifestyle() {
                   <span>{waitlistCount.toLocaleString()} waiting for access</span>
                 </div>
               )}
-            </motion.div>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Minimal scroll hint */}
       <motion.div

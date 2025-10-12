@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter, Cormorant_Garamond, Sora, Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { SmoothScrollProvider } from "@/components/smooth-scroll-provider";
+import { CursorFollower } from "@/components/ui/cursor-follower";
+import { SmoothScroll } from "@/components/ui/smooth-scroll";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -45,7 +47,10 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={`${dmSans.variable} ${playfair.variable} ${inter.variable} ${cormorant.variable} ${sora.variable} font-sans antialiased`}>
         <SmoothScrollProvider>
-          {children}
+          <SmoothScroll>
+            <CursorFollower />
+            {children}
+          </SmoothScroll>
         </SmoothScrollProvider>
       </body>
     </html>

@@ -6,10 +6,12 @@ import { SocialProof } from "@/components/landing/social-proof";
 import { FinalInvite } from "@/components/landing/final-invite";
 import { FooterRefined } from "@/components/landing/footer-refined";
 import { Toaster } from "@/components/ui/toaster";
+import { FloatingElements } from "@/components/ui/floating-elements";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black relative">
+      <FloatingElements />
       <NavbarBold />
       <HeroLifestyle />
       <Intrigue />
