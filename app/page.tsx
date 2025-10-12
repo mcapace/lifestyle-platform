@@ -1,9 +1,11 @@
 import { NavbarBold } from "@/components/landing/navbar-bold";
 import { HeroLifestyle } from "@/components/landing/hero-lifestyle";
 import { Intrigue } from "@/components/landing/intrigue";
-import { WhatWeAre } from "@/components/landing/what-we-are";
+import { NarrativeSection } from "@/components/landing/narrative-section";
+import { Principles } from "@/components/landing/principles";
 import { SocialProof } from "@/components/landing/social-proof";
-import { FinalInvite } from "@/components/landing/final-invite";
+import { EarlyAccess } from "@/components/landing/early-access";
+import { Channels } from "@/components/landing/channels";
 import { FooterRefined } from "@/components/landing/footer-refined";
 import { Toaster } from "@/components/ui/toaster";
 import { FloatingElements } from "@/components/ui/floating-elements";
@@ -15,9 +17,11 @@ export default function HomePage() {
       <NavbarBold />
       <HeroLifestyle />
       <Intrigue />
-      <WhatWeAre />
+      <NarrativeSection />
+      <Principles />
       <SocialProof />
-      <FinalInvite />
+      <EarlyAccess />
+      <Channels />
       <FooterRefined />
       <Toaster />
     </div>
