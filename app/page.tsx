@@ -1,11 +1,14 @@
 import { NavbarBold } from "@/components/landing/navbar-bold";
 import { HeroLifestyle } from "@/components/landing/hero-lifestyle";
+import { StatsCounter } from "@/components/landing/stats-counter";
 import { Intrigue } from "@/components/landing/intrigue";
 import { NarrativeSection } from "@/components/landing/narrative-section";
 import { WhoThisIsFor } from "@/components/landing/who-this-is-for";
+import { BentoGrid } from "@/components/landing/bento-grid";
 import { WhatMakesUsDifferent } from "@/components/landing/what-makes-us-different";
-import { TechStack } from "@/components/landing/tech-stack";
+import { MarqueeLogos } from "@/components/landing/marquee-logos";
 import { Principles } from "@/components/landing/principles";
+import { FAQElegant } from "@/components/landing/faq-elegant";
 import { EarlyAccess } from "@/components/landing/early-access";
 import { Channels } from "@/components/landing/channels";
 import { FooterRefined } from "@/components/landing/footer-refined";
@@ -18,12 +21,15 @@ export default function HomePage() {
       <FloatingElements />
       <NavbarBold />
       <HeroLifestyle />
+      <StatsCounter />
       <Intrigue />
       <NarrativeSection />
       <WhoThisIsFor />
+      <BentoGrid />
       <WhatMakesUsDifferent />
-      <TechStack />
+      <MarqueeLogos />
       <Principles />
+      <FAQElegant />
       <EarlyAccess />
       <Channels />
       <FooterRefined />
