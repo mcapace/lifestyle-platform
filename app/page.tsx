@@ -1,19 +1,19 @@
-import { Navbar } from "@/components/landing/navbar";
-import { HeroModern } from "@/components/landing/hero-modern";
-import { TrustSignalsModern } from "@/components/landing/trust-signals-modern";
-import { JourneyModern } from "@/components/landing/journey-modern";
-import { Testimonials } from "@/components/landing/testimonials";
-import { Footer } from "@/components/landing/footer";
+import { NavbarRefined } from "@/components/landing/navbar-refined";
+import { HeroRefined } from "@/components/landing/hero-refined";
+import { FeaturesRefined } from "@/components/landing/features-refined";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { TestimonialsRefined } from "@/components/landing/testimonials-refined";
+import { FooterRefined } from "@/components/landing/footer-refined";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-black text-stone-100">
-      <Navbar />
-      <HeroModern />
-      <TrustSignalsModern />
-      <JourneyModern />
-      <Testimonials />
-      <Footer />
+    <div className="min-h-screen">
+      <NavbarRefined />
+      <HeroRefined />
+      <FeaturesRefined />
+      <HowItWorks />
+      <TestimonialsRefined />
+      <FooterRefined />
     </div>
   );
 }
