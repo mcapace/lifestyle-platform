@@ -1,6 +1,7 @@
 import { NavbarBold } from "@/components/landing/navbar-bold";
-import { HeroBold } from "@/components/landing/hero-bold";
+import { HeroLaunch } from "@/components/landing/hero-launch";
 import { Manifesto } from "@/components/landing/manifesto";
+import { Comparison } from "@/components/landing/comparison";
 import { ComingSoon } from "@/components/landing/coming-soon";
 import { Team } from "@/components/landing/team";
 import { FinalCTA } from "@/components/landing/final-cta";
@@ -11,8 +12,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-black">
       <NavbarBold />
-      <HeroBold />
+      <HeroLaunch />
       <Manifesto />
+      <Comparison />
       <ComingSoon />
       <Team />
       <FinalCTA />

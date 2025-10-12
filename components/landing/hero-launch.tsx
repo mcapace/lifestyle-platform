@@ -1,25 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, Check } from "lucide-react";
+import { useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
+import Image from "next/image";
 
 export function HeroLaunch() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const [waitlistCount, setWaitlistCount] = useState(0);
   const { toast } = useToast();
-
-  // Get real waitlist count
-  useEffect(() => {
-    fetch("/api/waitlist/count")
-      .then((res) => res.json())
-      .then((data) => setWaitlistCount(data.count))
-      .catch(() => setWaitlistCount(0));
-  }, []);
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 300], [1, 0]);
 
   async function handleWaitlist() {
     if (!email || !email.includes("@")) {
@@ -35,100 +30,90 @@ export function HeroLaunch() {
         body: JSON.stringify({ email }),
       });
 
-      const data = await res.json();
-
       if (res.ok) {
-        toast({
-          title: "You're in.",
-          description: "Check your email for exclusive launch updates.",
-        });
+        toast({ title: "Welcome. You're in." });
         setEmail("");
-        setWaitlistCount((prev) => prev + 1);
-      } else {
-        throw new Error(data.error);
       }
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Error";
-      toast({ title: errorMessage, variant: "destructive" });
+      toast({ title: "Error", variant: "destructive" });
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <section className="relative min-h-screen overflow-hidden bg-black">
-      {/* Dramatic background */}
-      <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{
-            backgroundImage: `url('/images/AdobeStock_216584147.jpeg')`,
-          }}
+    <section className="relative h-screen overflow-hidden">
+      {/* Hero Image - Full Bleed with Parallax */}
+      <motion.div style={{ y }} className="absolute inset-0 scale-110">
+        <Image
+          src="/images/AdobeStock_216584147.jpeg"
+          alt="Hero"
+          fill
+          className="object-cover"
+          priority
+          quality={100}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/70" />
-      </div>
+        {/* Dramatic gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-transparent" />
+        <div className="absolute inset-0 bg-black/30" />
+      </motion.div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center">
-        <div className="max-w-5xl mx-auto px-6 py-32">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            {/* Status badge */}
-            <div className="inline-flex items-center gap-3 mb-8">
-              <div className="relative">
-                <div className="w-2 h-2 bg-brand-500 rounded-full animate-pulse" />
-                <div className="absolute inset-0 bg-brand-500 rounded-full animate-ping" />
+      <motion.div
+        style={{ opacity }}
+        className="relative z-10 h-full flex items-center"
+      >
+        <div className="max-w-7xl mx-auto px-6 w-full">
+          <div className="max-w-2xl">
+            {/* Small badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+              className="inline-block mb-6"
+            >
+              <div className="px-4 py-1.5 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full">
+                <span className="text-white/90 text-xs font-light tracking-widest uppercase">
+                  Launching 2025
+                </span>
               </div>
-              <span className="text-neutral-400 text-sm font-light tracking-wider uppercase">
-                Launching Q1 2025
-              </span>
-            </div>
+            </motion.div>
 
-            {/* Headline - massive, bold statement */}
-            <h1 className="text-7xl md:text-8xl lg:text-9xl font-light text-white leading-[0.9] mb-8">
-              It&apos;s Time for
-              <br />
-              <span className="text-brand-500 italic">Something Better.</span>
-            </h1>
+            {/* Main headline - MASSIVE */}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="mb-8"
+            >
+              <div className="text-7xl md:text-8xl lg:text-9xl font-light text-white leading-[0.9] mb-4">
+                The
+              </div>
+              <div className="text-7xl md:text-8xl lg:text-9xl font-light text-white leading-[0.9] mb-4">
+                Lifestyle.
+              </div>
+              <div className="text-6xl md:text-7xl lg:text-8xl text-brand-500 leading-[0.9] italic font-light">
+                Elevated.
+              </div>
+            </motion.h1>
 
-            <p className="text-2xl md:text-3xl text-neutral-400 mb-6 max-w-3xl font-light leading-relaxed">
-              Adult Friend Finder hasn&apos;t changed in 20 years.
-              <br />
-              <span className="text-white">We&apos;re building what comes next.</span>
-            </p>
+            {/* Single line of copy */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
+              className="text-xl md:text-2xl text-white/90 mb-12 font-light"
+            >
+              The verified community built for 2025.
+            </motion.p>
 
-            <p className="text-lg text-neutral-500 mb-12 max-w-2xl font-light">
-              A verified community built for 2025. Modern design. Real privacy.
-              Actual safety. No bots. No scams. No 1990s interface.
-            </p>
-
-            {/* What you get for joining early */}
-            <div className="grid sm:grid-cols-2 gap-4 mb-12 max-w-2xl">
-              {[
-                "First 1,000 members get lifetime VIP status",
-                "Early access before public launch",
-                "Founding member badge & benefits",
-                "Help shape the platform",
-              ].map((benefit) => (
-                <motion.div
-                  key={benefit}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="flex items-start gap-3"
-                >
-                  <div className="flex-shrink-0 w-5 h-5 bg-brand-500 rounded-full flex items-center justify-center mt-0.5">
-                    <Check className="w-3 h-3 text-black" />
-                  </div>
-                  <span className="text-neutral-300 font-light">{benefit}</span>
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Email form */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6 max-w-2xl">
+            {/* Email form - clean */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.8 }}
+              className="flex gap-3"
+            >
               <Input
                 type="email"
                 value={email}
@@ -136,33 +121,34 @@ export function HeroLaunch() {
                 onKeyPress={(e) => e.key === "Enter" && handleWaitlist()}
                 placeholder="Enter your email"
                 disabled={loading}
-                className="flex-1 h-14 bg-neutral-900/50 border-neutral-800 text-white placeholder-neutral-600 text-lg focus:border-brand-500"
+                className="flex-1 h-14 bg-white/10 backdrop-blur-sm border-white/20 text-white placeholder-white/60 text-lg focus:bg-white/15 focus:border-white/40"
               />
               <Button
                 onClick={handleWaitlist}
                 disabled={loading}
-                className="h-14 px-10 bg-brand-500 hover:bg-brand-600 text-black font-medium text-lg rounded-none"
+                className="h-14 px-8 bg-white hover:bg-white/90 text-black font-medium rounded-none"
               >
-                {loading ? "JOINING..." : "JOIN WAITLIST"}
-                <ArrowRight className="ml-2 w-5 h-5" />
+                JOIN
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
-            </div>
-
-            {/* Real waitlist count */}
-            {waitlistCount > 0 && (
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="text-sm text-neutral-600 font-light"
-              >
-                <span className="text-brand-500 font-medium">{waitlistCount}</span>{" "}
-                people waiting • No spam, ever
-              </motion.p>
-            )}
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
+      </motion.div>
+
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20"
+      >
+        <motion.div
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="w-px h-16 bg-gradient-to-b from-transparent via-white/50 to-transparent"
+        />
+      </motion.div>
     </section>
   );
 }
-
