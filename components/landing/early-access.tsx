@@ -47,7 +47,7 @@ export function EarlyAccess() {
   }
 
   return (
-    <section className="py-32 px-6 bg-neutral-950">
+    <section id="early-access" className="py-32 px-6 bg-neutral-950">
       <div className="max-w-5xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Perks */}

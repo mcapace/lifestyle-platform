@@ -35,7 +35,7 @@ export function FAQElegant() {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   return (
-    <section className="py-32 px-6 bg-black">
+    <section id="faq" className="py-32 px-6 bg-black">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
