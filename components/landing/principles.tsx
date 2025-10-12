@@ -6,23 +6,23 @@ import { RevealText } from "@/components/ui/reveal-text";
 const principles = [
   {
     number: "01",
-    title: "Verification First",
-    description: "Every member undergoes multi-layer verification. ID check. Photo verification. No exceptions. Your safety isn't negotiable."
+    title: "Absolute Privacy",
+    description: "Ghost mode. Face blur. Anonymous browsing. Your professional life stays separate. We use military-grade encryption and never sell your data."
   },
   {
     number: "02",
-    title: "Privacy By Design",
-    description: "End-to-end encryption on all communications. Your data never leaves our servers. No tracking. No selling. Ever."
+    title: "Zero Fakes",
+    description: "ID verification. Live photo check. AI screening. We weed out single guys pretending to be couples, catfish, and time-wasters. Real people only."
   },
   {
     number: "03",
-    title: "Curated Community",
-    description: "This isn't for everyone, and that's the point. Quality over quantity. Intention over scale. A space for those who value discretion."
+    title: "Respect & Boundaries",
+    description: "Clear consent tools. Block & report that works. Human moderation 24/7. Your 'no' is always respected. Zero tolerance for harassment."
   },
   {
     number: "04",
-    title: "Modern Experience",
-    description: "Built for 2025, not 2005. Native apps. Clean design. Thoughtful features. Technology that respects your intelligence."
+    title: "Elevated Experience",
+    description: "Beautiful design. Thoughtful features. Event integration. Travel matching. This isn't a hookup app—it's a lifestyle companion."
   }
 ];
 

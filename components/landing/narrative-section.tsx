@@ -11,15 +11,16 @@ export function NarrativeSection() {
             {/* Opening */}
             <div>
               <p className="text-2xl md:text-3xl font-light text-white leading-relaxed">
-                For years, the lifestyle community has been underserved.
+                Curious about swinging? Opening your relationship? Exploring polyamory?
               </p>
             </div>
 
             {/* Problem */}
             <div>
               <p className="text-xl md:text-2xl font-light text-neutral-400 leading-relaxed">
-                Platforms built in different eras. Privacy as an afterthought. 
-                Verification? Optional. Design? Outdated.
+                For too long, the lifestyle community has made do with outdated platforms. 
+                Clunky interfaces from the 90s. Fake profiles. Zero discretion. 
+                Your desires deserve better.
               </p>
             </div>
 
@@ -29,22 +30,22 @@ export function NarrativeSection() {
             {/* Solution */}
             <div>
               <p className="text-2xl md:text-3xl font-light text-white leading-relaxed">
-                We&apos;re building what should have existed all along.
+                This is the modern sanctuary you&apos;ve been waiting for.
               </p>
             </div>
 
             {/* Vision */}
             <div>
               <p className="text-xl md:text-2xl font-light text-neutral-400 leading-relaxed">
-                A space where your identity is verified, your privacy is paramount, 
-                and your experience is elevated. Where sophistication isn&apos;t a luxury—it&apos;s the standard.
+                Where couples connect with couples. Where singles find like-minded partners. 
+                Where your fantasies meet reality—safely, privately, elegantly.
               </p>
             </div>
 
             {/* Close */}
             <div>
-              <p className="text-lg text-neutral-500 font-light italic">
-                This is more than a platform. It&apos;s a movement.
+              <p className="text-xl text-white font-light">
+                No judgment. No drama. Just authentic exploration.
               </p>
             </div>
           </div>

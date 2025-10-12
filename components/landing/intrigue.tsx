@@ -14,20 +14,20 @@ export function Intrigue() {
             <div>
               <RevealText>
                 <h2 className="text-5xl md:text-6xl font-light text-white mb-8 leading-tight">
-                  Not everyone
+                  For those who
                   <br />
-                  gets in.
+                  <span className="text-brand-500 italic">dare to explore.</span>
                 </h2>
               </RevealText>
               <RevealText delay={0.2}>
                 <div className="space-y-4 text-lg text-neutral-400 font-light leading-relaxed">
                   <p>
-                    We&apos;re building something different. A space where authenticity
-                    isn&apos;t optional. Where privacy isn&apos;t negotiable.
+                    Whether you&apos;re curious about the lifestyle, looking to spice up your relationship, 
+                    or already living the alternative—this is your sanctuary.
                   </p>
                   <p className="text-white">
-                    Where the lifestyle community finally has a home that respects
-                    who they are.
+                    A verified space where open-minded adults connect without judgment. 
+                    Where your privacy is sacred. Where sophistication meets desire.
                   </p>
                 </div>
               </RevealText>

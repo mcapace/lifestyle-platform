@@ -126,7 +126,7 @@ export function HeroLifestyle() {
 
             {/* Subhead - minimal */}
             <p className="hero-subtitle text-xl md:text-2xl text-white/90 mb-12 font-light max-w-lg leading-relaxed">
-              A private community for those who seek more.
+              For couples and singles exploring beyond the ordinary.
             </p>
 
             {/* Email capture - elegant */}

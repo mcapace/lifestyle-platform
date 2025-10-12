@@ -12,10 +12,11 @@ export function SocialProof() {
           viewport={{ once: true }}
         >
           <blockquote className="text-3xl md:text-4xl font-light text-white mb-8 leading-relaxed italic">
-            &quot;Finally, a platform that understands what we&apos;ve been asking for.&quot;
+            &quot;We&apos;ve been in the lifestyle for 10 years. Every platform feels sketchy or outdated. 
+            This is what we&apos;ve been waiting for—privacy, verification, and actually good design.&quot;
           </blockquote>
           <div className="text-neutral-500 font-light">
-            — Early Access Member
+            — Sarah & Mike, Founding Members
           </div>
         </motion.div>
       </div>
