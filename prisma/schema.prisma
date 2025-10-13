@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ============================================
@@ -12,70 +13,99 @@ datasource db {
 // ============================================
 
 model User {
-  id                String    @id @default(cuid())
-  email             String    @unique
-  emailVerified     DateTime?
-  username          String?   @unique
-  password          String
-  name              String?
-  avatar            String?
-  bio               String?
-  dateOfBirth       DateTime?
-  location          String?
-  
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  username      String?   @unique
+  password      String
+  name          String?
+  avatar        String?
+  bio           String?
+  dateOfBirth   DateTime?
+  location      String?
+  latitude      Float?
+  longitude     Float?
+
   // User Type
-  accountType       AccountType @default(INDIVIDUAL)
-  lookingFor        String[]  // Array of what they're seeking
-  
+  accountType     AccountType     @default(INDIVIDUAL)
+  lookingFor      String[] // ["COUPLES", "SINGLES", "GROUPS"]
+  experienceLevel ExperienceLevel @default(CURIOUS)
+
+  // Lifestyle Preferences
+  preferences LifestylePreference[]
+
   // Verification Status
-  verified          Boolean   @default(false)
+  verified          Boolean           @default(false)
   verificationLevel VerificationLevel @default(NONE)
   verifiedAt        DateTime?
-  idVerified        Boolean   @default(false)
-  photoVerified     Boolean   @default(false)
-  
+  idVerified        Boolean           @default(false)
+  photoVerified     Boolean           @default(false)
+  coupleVerified    Boolean           @default(false) // Both partners verified
+  partnerId         String? // Link to partner's account (for couples)
+
   // Privacy Settings
-  isPrivate         Boolean   @default(true)
-  ghostMode         Boolean   @default(false)
-  showOnline        Boolean   @default(true)
-  showLocation      Boolean   @default(false)
+  isPrivate         Boolean           @default(true)
+  ghostMode         Boolean           @default(false)
+  faceBlur          Boolean           @default(false)
+  showOnline        Boolean           @default(true)
+  showLocation      Boolean           @default(false)
+  showDistance      Boolean           @default(true)
   allowMessages     MessagePermission @default(VERIFIED_ONLY)
-  
+  profileVisibility ProfileVisibility @default(VERIFIED_ONLY)
+
   // Membership
-  membershipTier    MembershipTier @default(FREE)
-  membershipExpiry  DateTime?
-  
+  membershipTier       MembershipTier @default(FREE)
+  membershipExpiry     DateTime?
+  stripeCustomerId     String?
+  stripeSubscriptionId String?
+
   // Safety & Moderation
-  isBanned          Boolean   @default(false)
-  bannedAt          DateTime?
-  banReason         String?
-  reportCount       Int       @default(0)
-  trustScore        Float     @default(0.5)
-  
+  isBanned        Boolean   @default(false)
+  bannedAt        DateTime?
+  banReason       String?
+  reportCount     Int       @default(0)
+  trustScore      Float     @default(50.0) // 0-100
+  responseRate    Float     @default(0.0) // 0-100
+  eventAttendance Int       @default(0)
+
+  // Stats & Analytics
+  profileViews   Int @default(0)
+  likesReceived  Int @default(0)
+  matchesCount   Int @default(0)
+  eventsAttended Int @default(0)
+
   // Timestamps
-  lastActive        DateTime  @default(now())
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-  
+  lastActive DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
   // Relations
-  accounts          Account[]
-  sessions          Session[]
-  photos            Photo[]
-  sentMessages      Message[] @relation("SentMessages")
-  receivedMessages  Message[] @relation("ReceivedMessages")
-  interests         Interest[]
-  blockedUsers      Block[]   @relation("BlockedBy")
-  blockedByUsers    Block[]   @relation("Blocked")
-  reportsMade       Report[]  @relation("Reporter")
-  reportsReceived   Report[]  @relation("Reported")
-  likes             Like[]
-  matches           Match[]   @relation("UserMatches")
-  matchedWith       Match[]   @relation("MatchedWith")
-  
+  accounts         Account[]
+  sessions         Session[]
+  photos           Photo[]
+  sentMessages     Message[]     @relation("SentMessages")
+  receivedMessages Message[]     @relation("ReceivedMessages")
+  interests        Interest[]
+  blockedUsers     Block[]       @relation("BlockedBy")
+  blockedByUsers   Block[]       @relation("Blocked")
+  reportsMade      Report[]      @relation("Reporter")
+  reportsReceived  Report[]      @relation("Reported")
+  likes            Like[]
+  likedBy          Like[]        @relation("LikedBy")
+  matches          Match[]       @relation("UserMatches")
+  matchedWith      Match[]       @relation("MatchedWith")
+  hostedEvents     Event[]       @relation("EventHost")
+  eventRSVPs       EventRSVP[]
+  eventReviews     EventReview[]
+  posts            Post[]
+  comments         Comment[]
+
   @@index([email])
   @@index([username])
   @@index([membershipTier])
   @@index([verificationLevel])
+  @@index([location])
+  @@index([trustScore])
 }
 
 model Account {
@@ -104,7 +134,7 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([userId])
 }
 
@@ -121,33 +151,50 @@ model VerificationToken {
 // ============================================
 
 model Photo {
-  id          String   @id @default(cuid())
-  userId      String
-  url         String
-  thumbnail   String?
-  isPrivate   Boolean  @default(false)
-  isVerification Boolean @default(false)
-  isPrimary   Boolean  @default(false)
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  
+  id               String           @id @default(cuid())
+  userId           String
+  url              String
+  thumbnail        String?
+  isPrivate        Boolean          @default(false)
+  isIncognito      Boolean          @default(false) // VIP feature - only visible to unlocked matches
+  isVerification   Boolean          @default(false)
+  isPrimary        Boolean          @default(false)
+  faceBlurred      Boolean          @default(false)
+  order            Int              @default(0)
+  moderationStatus ModerationStatus @default(PENDING)
+  createdAt        DateTime         @default(now())
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([userId])
   @@index([isPrimary])
+  @@index([moderationStatus])
 }
 
 model Interest {
   id        String   @id @default(cuid())
   userId    String
-  category  String
+  category  String // "LIFESTYLE", "HOBBIES", "TRAVEL", etc.
   name      String
   createdAt DateTime @default(now())
-  
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
   @@index([userId])
   @@index([category])
+}
+
+model LifestylePreference {
+  id             String         @id @default(cuid())
+  userId         String
+  preferenceType PreferenceType
+  value          String // e.g., "SOFT_SWAP", "FULL_SWAP", "SAME_ROOM"
+  createdAt      DateTime       @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, preferenceType, value])
+  @@index([userId])
 }
 
 // ============================================
@@ -155,20 +202,25 @@ model Interest {
 // ============================================
 
 model Message {
-  id         String      @id @default(cuid())
-  senderId   String
-  receiverId String
-  content    String
-  isRead     Boolean     @default(false)
-  readAt     DateTime?
-  createdAt  DateTime    @default(now())
-  
+  id             String      @id @default(cuid())
+  senderId       String
+  receiverId     String
+  content        String
+  messageType    MessageType @default(TEXT)
+  mediaUrl       String? // For photos/videos
+  isRead         Boolean     @default(false)
+  readAt         DateTime?
+  isDisappearing Boolean     @default(false) // VIP feature
+  expiresAt      DateTime?
+  createdAt      DateTime    @default(now())
+
   sender   User @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
   receiver User @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
-  
+
   @@index([senderId])
   @@index([receiverId])
   @@index([createdAt])
+  @@index([isRead])
 }
 
 // ============================================
@@ -176,34 +228,200 @@ model Message {
 // ============================================
 
 model Match {
-  id          String   @id @default(cuid())
-  userId      String
-  matchedId   String
-  status      MatchStatus @default(PENDING)
-  initiatedBy String
-  createdAt   DateTime @default(now())
-  matchedAt   DateTime?
-  
+  id                 String      @id @default(cuid())
+  userId             String
+  matchedId          String
+  status             MatchStatus @default(PENDING)
+  initiatedBy        String
+  compatibilityScore Float? // 0-100 calculated score
+  createdAt          DateTime    @default(now())
+  matchedAt          DateTime?
+  lastInteraction    DateTime?
+
   user    User @relation("UserMatches", fields: [userId], references: [id], onDelete: Cascade)
   matched User @relation("MatchedWith", fields: [matchedId], references: [id], onDelete: Cascade)
-  
+
   @@unique([userId, matchedId])
   @@index([userId])
   @@index([matchedId])
   @@index([status])
+  @@index([compatibilityScore])
 }
 
 model Like {
   id        String   @id @default(cuid())
   userId    String
   likedId   String
+  likeType  LikeType @default(LIKE) // LIKE, SUPER_LIKE
   createdAt DateTime @default(now())
-  
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
+
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likedUser User @relation("LikedBy", fields: [likedId], references: [id], onDelete: Cascade)
+
   @@unique([userId, likedId])
   @@index([userId])
   @@index([likedId])
+  @@index([likeType])
+}
+
+// ============================================
+// EVENTS SYSTEM
+// ============================================
+
+model Event {
+  id          String    @id @default(cuid())
+  hostId      String
+  title       String
+  description String
+  eventType   EventType
+  date        DateTime
+  endDate     DateTime?
+  location    String
+  address     String? // Only visible to RSVPs
+  latitude    Float?
+  longitude   Float?
+  capacity    Int?
+  pricing     Float? // 0 = free
+  currency    String    @default("USD")
+  coverPhoto  String?
+
+  // Requirements
+  verificationRequired VerificationLevel @default(BASIC)
+  ageMin               Int?
+  ageMax               Int?
+  couplesOnly          Boolean           @default(false)
+  dresscode            String?
+  rules                String?
+
+  // Status
+  status           EventStatus      @default(DRAFT)
+  isPublic         Boolean          @default(true)
+  moderationStatus ModerationStatus @default(PENDING)
+
+  // Stats
+  viewCount     Int    @default(0)
+  rsvpCount     Int    @default(0)
+  attendeeCount Int    @default(0)
+  avgRating     Float?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  host    User          @relation("EventHost", fields: [hostId], references: [id], onDelete: Cascade)
+  rsvps   EventRSVP[]
+  reviews EventReview[]
+
+  @@index([hostId])
+  @@index([eventType])
+  @@index([date])
+  @@index([location])
+  @@index([status])
+}
+
+model EventRSVP {
+  id               String     @id @default(cuid())
+  eventId          String
+  userId           String
+  status           RSVPStatus @default(PENDING)
+  ticketsPurchased Int        @default(1)
+  checkedIn        Boolean    @default(false)
+  checkedInAt      DateTime?
+  createdAt        DateTime   @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([status])
+}
+
+model EventReview {
+  id          String   @id @default(cuid())
+  eventId     String
+  userId      String
+  rating      Int // 1-5 stars
+  review      String?
+  wouldReturn Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+  @@index([rating])
+}
+
+// ============================================
+// CONTENT & COMMUNITY
+// ============================================
+
+model Post {
+  id               String           @id @default(cuid())
+  userId           String
+  content          String
+  category         PostCategory
+  isAnonymous      Boolean          @default(false)
+  moderationStatus ModerationStatus @default(PENDING)
+  likes            Int              @default(0)
+  commentCount     Int              @default(0)
+  viewCount        Int              @default(0)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments Comment[]
+
+  @@index([userId])
+  @@index([category])
+  @@index([createdAt])
+}
+
+model Comment {
+  id               String           @id @default(cuid())
+  postId           String
+  userId           String
+  content          String
+  isAnonymous      Boolean          @default(false)
+  moderationStatus ModerationStatus @default(PENDING)
+  createdAt        DateTime         @default(now())
+
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([postId])
+  @@index([userId])
+}
+
+// ============================================
+// ANALYTICS & TRACKING
+// ============================================
+
+model ProfileView {
+  id        String   @id @default(cuid())
+  viewerId  String // Who viewed
+  viewedId  String // Who was viewed
+  createdAt DateTime @default(now())
+
+  @@index([viewerId])
+  @@index([viewedId])
+  @@index([createdAt])
+}
+
+model SwipeAction {
+  id        String          @id @default(cuid())
+  userId    String // Who swiped
+  targetId  String // Who they swiped on
+  action    SwipeActionType // LIKE, PASS, SUPER_LIKE
+  createdAt DateTime        @default(now())
+
+  @@index([userId])
+  @@index([targetId])
+  @@index([action])
+  @@index([createdAt])
 }
 
 // ============================================
@@ -211,15 +429,15 @@ model Like {
 // ============================================
 
 model Block {
-  id         String   @id @default(cuid())
-  blockerId  String
-  blockedId  String
-  reason     String?
-  createdAt  DateTime @default(now())
-  
+  id        String   @id @default(cuid())
+  blockerId String
+  blockedId String
+  reason    String?
+  createdAt DateTime @default(now())
+
   blocker User @relation("BlockedBy", fields: [blockerId], references: [id], onDelete: Cascade)
   blocked User @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
-  
+
   @@unique([blockerId, blockedId])
   @@index([blockerId])
   @@index([blockedId])
@@ -229,19 +447,23 @@ model Report {
   id          String       @id @default(cuid())
   reporterId  String
   reportedId  String
+  reportType  ReportType // USER, EVENT, POST
+  targetId    String // ID of reported item
   reason      ReportReason
   description String?
   status      ReportStatus @default(PENDING)
   reviewedBy  String?
   reviewedAt  DateTime?
+  action      String? // Action taken
   createdAt   DateTime     @default(now())
-  
+
   reporter User @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
   reported User @relation("Reported", fields: [reportedId], references: [id], onDelete: Cascade)
-  
+
   @@index([reporterId])
   @@index([reportedId])
   @@index([status])
+  @@index([reportType])
 }
 
 // ============================================
@@ -249,12 +471,13 @@ model Report {
 // ============================================
 
 model Waitlist {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  createdAt DateTime @default(now())
-  invited   Boolean  @default(false)
+  id        String    @id @default(cuid())
+  email     String    @unique
+  referrer  String? // Referral code
+  createdAt DateTime  @default(now())
+  invited   Boolean   @default(false)
   invitedAt DateTime?
-  
+
   @@index([email])
 }
 
@@ -268,11 +491,19 @@ enum AccountType {
   GROUP
 }
 
+enum ExperienceLevel {
+  CURIOUS // Brand new, exploring
+  BEGINNER // Dipped toes in
+  INTERMEDIATE // Active, learning
+  EXPERIENCED // Regular lifestyle participant
+  VETERAN // Years in the scene
+}
+
 enum VerificationLevel {
   NONE
-  BASIC      // Email + Phone
-  ENHANCED   // + ID Verification
-  PREMIUM    // + Background Check
+  BASIC // Email + Phone
+  ENHANCED // + Photo Verification
+  PREMIUM // + ID Verification
 }
 
 enum MembershipTier {
@@ -288,6 +519,13 @@ enum MessagePermission {
   NOBODY
 }
 
+enum ProfileVisibility {
+  PUBLIC // Everyone
+  VERIFIED_ONLY // Only verified users
+  MATCHES_ONLY // Only after mutual match
+  PRIVATE // Invisible (ghost mode)
+}
+
 enum MatchStatus {
   PENDING
   ACCEPTED
@@ -295,13 +533,35 @@ enum MatchStatus {
   EXPIRED
 }
 
+enum LikeType {
+  LIKE
+  SUPER_LIKE
+}
+
+enum PreferenceType {
+  SWAP_PREFERENCE // Soft, Full, None
+  ROOM_PREFERENCE // Same, Separate, Either
+  GENDER_PREFERENCE // Men, Women, Both, Other
+  SEEKING // Couples, Singles, Groups
+}
+
 enum ReportReason {
-  HARASSMENT
   FAKE_PROFILE
+  HARASSMENT
   INAPPROPRIATE_CONTENT
   SPAM
   UNDERAGE
+  NO_SHOW // Didn't show up to event
+  CATFISH
+  VIOLATION
   OTHER
+}
+
+enum ReportType {
+  USER
+  EVENT
+  POST
+  MESSAGE
 }
 
 enum ReportStatus {
@@ -309,4 +569,61 @@ enum ReportStatus {
   REVIEWING
   RESOLVED
   DISMISSED
+}
+
+enum EventType {
+  HOUSE_PARTY
+  CLUB_NIGHT
+  RESORT_WEEKEND
+  MEET_AND_GREET
+  HOTEL_TAKEOVER
+  CRUISE
+  WORKSHOP
+  SPEED_DATING
+  THEMED_PARTY
+  OTHER
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+  COMPLETED
+}
+
+enum RSVPStatus {
+  PENDING
+  CONFIRMED
+  WAITLIST
+  DECLINED
+  CANCELLED
+}
+
+enum PostCategory {
+  DISCUSSION
+  ADVICE
+  EXPERIENCE
+  QUESTION
+  EVENT_RECAP
+}
+
+enum ModerationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  FLAGGED
+}
+
+enum MessageType {
+  TEXT
+  PHOTO
+  VIDEO
+  VOICE
+  LOCATION
+}
+
+enum SwipeActionType {
+  LIKE
+  PASS
+  SUPER_LIKE
 }
