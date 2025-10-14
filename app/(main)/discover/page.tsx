@@ -27,12 +27,13 @@ import {
   Dumbbell,
   PaintBrush,
   MagnifyingGlass,
-  Filter,
+  Funnel,
   Bell,
   Plus,
   TrendingUp,
   Trophy,
-  Target
+  Target,
+  X
 } from "@phosphor-icons/react";
 import Image from "next/image";
 
@@ -412,7 +413,7 @@ export default function DiscoverPage() {
                 <MagnifyingGlass weight="bold" size={20} />
               </button>
               <button className="p-2 text-neutral-400 hover:text-white transition-colors">
-                <Filter weight="bold" size={20} />
+                <Funnel weight="bold" size={20} />
               </button>
             </div>
           </div>

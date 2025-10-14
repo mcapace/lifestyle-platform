@@ -6,7 +6,6 @@ import {
   CheckCircle, 
   User, 
   Users, 
-  UserGroup, 
   ArrowRight, 
   Shield, 
   Camera, 
