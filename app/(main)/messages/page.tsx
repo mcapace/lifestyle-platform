@@ -1,467 +1,350 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   MagnifyingGlass,
   Funnel,
+  Plus,
+  ChatCircle,
+  Star,
   Crown,
-  Shield,
-  Eye,
-  EyeSlash,
-  Camera,
-  Microphone,
-  Smiley,
-  PaperPlaneTilt,
-  Phone,
-  Video,
-  DotsThree,
-  Check,
-  Checks,
+  CheckCircle,
   Clock,
-  Heart,
+  DotsThree,
+  Camera,
   Image as ImageIcon,
-  FileText
+  Microphone,
+  Gif,
+  Smiley,
+  PaperPlane,
+  Translate,
+  VideoCamera,
+  Phone,
+  Info,
+  Archive,
+  Trash,
+  Flag,
+  Sparkle,
+  Robot
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useHaptics } from "@/lib/haptics/advanced-feedback";
 
-// Premium messaging data structure
-interface PremiumMessage {
+interface Message {
   id: string;
+  conversationId: string;
   senderId: string;
-  receiverId: string;
   content: string;
-  type: 'TEXT' | 'PHOTO' | 'VIDEO' | 'VOICE' | 'LOCATION' | 'DISAPPEARING';
-  timestamp: Date;
-  isRead: boolean;
-  readAt?: Date;
-  isDisappearing: boolean;
-  expiresAt?: Date;
-  reactions?: Array<{
-    emoji: string;
-    userId: string;
-    timestamp: Date;
-  }>;
-  replyTo?: string;
-  edited?: boolean;
-  editedAt?: Date;
+  type: 'text' | 'image' | 'voice' | 'video';
+  timestamp: string;
+  read: boolean;
+  translated?: string;
+  originalLanguage?: string;
 }
 
 interface Conversation {
   id: string;
-  participant: {
+  participants: Array<{
     id: string;
     name: string;
     avatar: string;
+    tier: 'curious' | 'explorer' | 'connoisseur';
     verified: boolean;
-    membershipTier: 'FREE' | 'PREMIUM' | 'VIP';
     online: boolean;
-    lastSeen?: Date;
-  };
-  lastMessage: PremiumMessage;
+  }>;
+  lastMessage: Message;
   unreadCount: number;
   isPinned: boolean;
-  isMuted: boolean;
   isArchived: boolean;
-  compatibility: number;
-  tags: string[];
-  premiumFeatures: string[];
+  lastActivity: string;
 }
 
-// Mock premium conversations
-const premiumConversations: Conversation[] = [
+const mockConversations: Conversation[] = [
   {
-    id: "1",
-    participant: {
-      id: "user1",
-      name: "Sarah & Mike",
-      avatar: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&q=80",
+    id: '1',
+    participants: [{
+      id: '2',
+      name: 'Sarah Mitchell',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop&crop=face',
+      tier: 'explorer',
       verified: true,
-      membershipTier: "VIP",
       online: true
-    },
+    }],
     lastMessage: {
-      id: "msg1",
-      senderId: "user1",
-      receiverId: "me",
-      content: "We'd love to meet for drinks this weekend! Are you free Saturday evening?",
-      type: "TEXT",
-      timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-      isRead: false,
-      isDisappearing: false
+      id: 'm1',
+      conversationId: '1',
+      senderId: '2',
+      content: 'Would love to join the wellness event this weekend!',
+      type: 'text',
+      timestamp: '2 min ago',
+      read: false
     },
     unreadCount: 2,
     isPinned: true,
-    isMuted: false,
     isArchived: false,
-    compatibility: 94,
-    tags: ["High Compatibility", "VIP", "Nearby"],
-    premiumFeatures: ["Read Receipts", "Typing Indicators", "Video Call Available"]
+    lastActivity: '2 min ago'
   },
   {
-    id: "2",
-    participant: {
-      id: "user2",
-      name: "Jessica",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+    id: '2',
+    participants: [{
+      id: '3',
+      name: 'Marcus Johnson',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+      tier: 'connoisseur',
       verified: true,
-      membershipTier: "PREMIUM",
-      online: false,
-      lastSeen: new Date(Date.now() - 1000 * 60 * 60 * 2) // 2 hours ago
-    },
+      online: false
+    }],
     lastMessage: {
-      id: "msg2",
-      senderId: "me",
-      receiverId: "user2",
-      content: "Thanks for the lovely evening! We should definitely do this again soon 😊",
-      type: "TEXT",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 3), // 3 hours ago
-      isRead: true,
-      readAt: new Date(Date.now() - 1000 * 60 * 60 * 2.5),
-      isDisappearing: false
+      id: 'm2',
+      conversationId: '2',
+      senderId: 'me',
+      content: 'Great meeting you at the art gallery opening!',
+      type: 'text',
+      timestamp: '1 hour ago',
+      read: true
     },
     unreadCount: 0,
     isPinned: false,
-    isMuted: false,
     isArchived: false,
-    compatibility: 88,
-    tags: ["Great Chemistry", "Premium"],
-    premiumFeatures: ["Read Receipts"]
+    lastActivity: '1 hour ago'
   },
   {
-    id: "3",
-    participant: {
-      id: "user3",
-      name: "Alex & Jordan",
-      avatar: "https://images.unsplash.com/photo-1606122017369-d782bbb78f32?w=400&q=80",
+    id: '3',
+    participants: [{
+      id: '4',
+      name: 'Elena Rodriguez',
+      avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+      tier: 'explorer',
       verified: true,
-      membershipTier: "VIP",
       online: true
-    },
+    }],
     lastMessage: {
-      id: "msg3",
-      senderId: "user3",
-      receiverId: "me",
-      content: "Looking forward to the event this weekend! See you there 🎉",
-      type: "TEXT",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 6), // 6 hours ago
-      isRead: true,
-      readAt: new Date(Date.now() - 1000 * 60 * 60 * 5),
-      isDisappearing: false
+      id: 'm3',
+      conversationId: '3',
+      senderId: '4',
+      content: 'The rooftop bar recommendation was perfect! 🌟',
+      type: 'text',
+      timestamp: '3 hours ago',
+      read: true
     },
     unreadCount: 0,
     isPinned: false,
-    isMuted: false,
     isArchived: false,
-    compatibility: 91,
-    tags: ["Event Buddies", "VIP", "High Compatibility"],
-    premiumFeatures: ["Read Receipts", "Typing Indicators", "Video Call Available", "Disappearing Messages"]
+    lastActivity: '3 hours ago'
   }
 ];
 
 export default function MessagesPage() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("ALL");
-  const [showFilters, setShowFilters] = useState(false);
+  const { trigger } = useHaptics();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'unread' | 'pinned'>('all');
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
+  const [messageText, setMessageText] = useState('');
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
 
-  const filters = [
-    { id: "ALL", label: "All Messages", icon: null },
-    { id: "UNREAD", label: "Unread", icon: null },
-    { id: "VIP", label: "VIP Members", icon: Crown },
-    { id: "VERIFIED", label: "Verified Only", icon: Shield },
-    { id: "ONLINE", label: "Online Now", icon: null },
-    { id: "PINNED", label: "Pinned", icon: null },
-  ];
-
-  // Filter conversations
-  const filteredConversations = premiumConversations.filter(conversation => {
-    // Search filter
-    if (searchQuery && !conversation.participant.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-
-    // Category filter
-    switch (selectedFilter) {
-      case "UNREAD":
-        return conversation.unreadCount > 0;
-      case "VIP":
-        return conversation.participant.membershipTier === "VIP";
-      case "VERIFIED":
-        return conversation.participant.verified;
-      case "ONLINE":
-        return conversation.participant.online;
-      case "PINNED":
-        return conversation.isPinned;
-      default:
-        return true;
-    }
+  const filteredConversations = mockConversations.filter(conv => {
+    const matchesSearch = searchQuery === '' || 
+      conv.participants[0].name.toLowerCase().includes(searchQuery.toLowerCase());
+    
+    const matchesFilter = 
+      activeFilter === 'all' ||
+      (activeFilter === 'unread' && conv.unreadCount > 0) ||
+      (activeFilter === 'pinned' && conv.isPinned);
+    
+    return matchesSearch && matchesFilter && !conv.isArchived;
   });
 
-  // Sort conversations (pinned first, then by last message time)
-  const sortedConversations = filteredConversations.sort((a, b) => {
-    if (a.isPinned && !b.isPinned) return -1;
-    if (!a.isPinned && b.isPinned) return 1;
-    return b.lastMessage.timestamp.getTime() - a.lastMessage.timestamp.getTime();
-  });
-
-  const formatLastSeen = (lastSeen: Date) => {
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - lastSeen.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return "Just now";
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays}d ago`;
+  const handleSendMessage = () => {
+    if (!messageText.trim()) return;
+    trigger('SUCCESS');
+    setMessageText('');
   };
 
-  const formatTimestamp = (timestamp: Date) => {
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) {
-      const diffInMinutes = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60));
-      return `${diffInMinutes}m`;
-    }
-    if (diffInHours < 24) {
-      return `${diffInHours}h`;
-    }
-    
-    const diffInDays = Math.floor(diffInHours / 24);
-    return `${diffInDays}d`;
+  const ConversationItem = ({ conversation }: { conversation: Conversation }) => {
+    const participant = conversation.participants[0];
+    const isUnread = conversation.unreadCount > 0;
+
+    return (
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+        onClick={() => {
+          setSelectedConversation(conversation.id);
+          trigger('BUTTON_PRESS');
+        }}
+        className={`p-4 border-b border-neutral-800 cursor-pointer transition-colors ${
+          isUnread ? 'bg-brand-500/5' : 'hover:bg-neutral-900/50'
+        }`}
+      >
+        <div className="flex items-start gap-3">
+          <div className="relative">
+            <img
+              src={participant.avatar}
+              alt={participant.name}
+              className="w-14 h-14 rounded-full object-cover"
+            />
+            {participant.online && (
+              <div className="absolute bottom-0 right-0 w-4 h-4 bg-green-500 border-2 border-neutral-950 rounded-full" />
+            )}
+            {conversation.isPinned && (
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center">
+                <Star weight="fill" size={12} className="text-white" />
+              </div>
+            )}
+          </div>
+
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-1">
+              <h3 className={`font-medium truncate ${isUnread ? 'text-white' : 'text-neutral-300'}`}>
+                {participant.name}
+              </h3>
+              {participant.tier === 'connoisseur' && (
+                <Crown weight="fill" size={14} className="text-amber-400" />
+              )}
+              {participant.verified && (
+                <CheckCircle weight="fill" size={14} className="text-blue-400" />
+              )}
+            </div>
+
+            <p className={`text-sm truncate ${isUnread ? 'text-white font-medium' : 'text-neutral-400'}`}>
+              {conversation.lastMessage.senderId === 'me' && 'You: '}
+              {conversation.lastMessage.content}
+            </p>
+
+            <div className="flex items-center gap-2 mt-1 text-xs text-neutral-500">
+              <Clock weight="bold" size={12} />
+              <span>{conversation.lastActivity}</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col items-end gap-2">
+            {isUnread && (
+              <div className="w-5 h-5 bg-brand-500 rounded-full flex items-center justify-center">
+                <span className="text-white text-xs font-medium">{conversation.unreadCount}</span>
+              </div>
+            )}
+            <button className="p-1 text-neutral-400 hover:text-white transition-colors">
+              <DotsThree weight="bold" size={16} />
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    );
   };
 
   return (
     <div className="min-h-screen bg-neutral-950 pb-20">
       {/* Header */}
       <div className="sticky top-0 z-10 bg-neutral-950/95 backdrop-blur-xl border-b border-neutral-800">
-        <div className="max-w-md mx-auto px-6 py-4 space-y-4">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-light text-white">Messages</h1>
-            <div className="flex items-center gap-3">
-              <button className="text-neutral-500 hover:text-white transition-colors">
-                <MagnifyingGlass weight="bold" size={20} />
-              </button>
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="text-neutral-500 hover:text-white transition-colors"
-              >
-                <Funnel weight="bold" size={20} />
-              </button>
-            </div>
+        <div className="max-w-md mx-auto px-6 py-4">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-xl font-light text-white">Messages</h1>
+            <button className="flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-full text-sm transition-colors">
+              <Plus weight="bold" size={16} />
+              New
+            </button>
           </div>
 
-          {/* Search */}
-          <div className="relative">
-            <MagnifyingGlass 
-              weight="bold" 
-              size={16} 
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-600" 
-            />
+          {/* Search Bar */}
+          <div className="relative mb-4">
+            <MagnifyingGlass weight="bold" size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" />
             <input
               type="text"
+              placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search conversations..."
-              className="w-full h-10 pl-10 pr-4 bg-neutral-900 border border-neutral-800 rounded-full text-white placeholder-neutral-600 text-sm focus:outline-none focus:border-brand-500/50 transition-colors"
+              className="w-full pl-10 pr-4 py-3 bg-neutral-900 border border-neutral-800 rounded-xl text-white placeholder-neutral-400 focus:outline-none focus:border-brand-500 transition-colors"
             />
           </div>
 
-          {/* Filters */}
-          <AnimatePresence>
-            {showFilters && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: "auto", opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                className="flex gap-2 overflow-x-auto pb-2"
+          {/* Filter Pills */}
+          <div className="flex gap-2">
+            {[
+              { id: 'all', label: 'All' },
+              { id: 'unread', label: 'Unread' },
+              { id: 'pinned', label: 'Pinned' }
+            ].map((filter) => (
+              <button
+                key={filter.id}
+                onClick={() => setActiveFilter(filter.id as typeof activeFilter)}
+                className={`px-4 py-2 rounded-full text-sm transition-all ${
+                  activeFilter === filter.id
+                    ? 'bg-brand-500 text-white'
+                    : 'bg-neutral-900 text-neutral-400 border border-neutral-800'
+                }`}
               >
-                {filters.map((filter) => (
-                  <button
-                    key={filter.id}
-                    onClick={() => setSelectedFilter(filter.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-light transition-all whitespace-nowrap ${
-                      selectedFilter === filter.id
-                        ? "bg-brand-500 text-white"
-                        : "bg-neutral-900 text-neutral-500 border border-neutral-800"
-                    }`}
-                  >
-                    {filter.icon && <filter.icon weight="bold" size={14} />}
-                    {filter.label}
-                  </button>
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
+                {filter.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       {/* Conversations List */}
       <div className="max-w-md mx-auto">
-        <AnimatePresence>
-          {sortedConversations.map((conversation, index) => (
-            <motion.div
-              key={conversation.id}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.05 }}
-            >
-              <Link href={`/messages/${conversation.id}`}>
-                <div className={`px-6 py-4 border-b border-neutral-800 hover:bg-neutral-900/30 transition-colors group cursor-pointer ${
-                  conversation.isPinned ? "bg-neutral-900/20" : ""
-                }`}>
-                  <div className="flex items-center gap-4">
-                    {/* Avatar */}
-                    <div className="relative">
-                      <Image
-                        src={conversation.participant.avatar}
-                        alt={conversation.participant.name}
-                        width={48}
-                        height={48}
-                        className="rounded-full"
-                      />
-                      
-                      {/* Online Status */}
-                      {conversation.participant.online && (
-                        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-neutral-950 rounded-full" />
-                      )}
-                      
-                      {/* Membership Badge */}
-                      {conversation.participant.membershipTier === "VIP" && (
-                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center">
-                          <Crown weight="fill" size={10} className="text-white" />
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Conversation Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <div className="flex items-center gap-2">
-                          <h3 className="text-white font-light truncate">
-                            {conversation.participant.name}
-                          </h3>
-                          {conversation.participant.verified && (
-                            <Shield weight="fill" size={14} className="text-brand-500 flex-shrink-0" />
-                          )}
-                          {conversation.isPinned && (
-                            <div className="w-1 h-1 bg-brand-500 rounded-full flex-shrink-0" />
-                          )}
-                        </div>
-                        
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs text-neutral-500">
-                            {formatTimestamp(conversation.lastMessage.timestamp)}
-                          </span>
-                          {conversation.unreadCount > 0 && (
-                            <div className="w-5 h-5 bg-brand-500 rounded-full flex items-center justify-center">
-                              <span className="text-xs font-medium text-white">
-                                {conversation.unreadCount > 9 ? "9+" : conversation.unreadCount}
-                              </span>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Last Message */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 min-w-0 flex-1">
-                          <p className="text-sm text-neutral-400 truncate">
-                            {conversation.lastMessage.type === 'PHOTO' && (
-                              <span className="flex items-center gap-1">
-                                <ImageIcon weight="bold" size={12} />
-                                Photo
-                              </span>
-                            )}
-                            {conversation.lastMessage.type === 'VIDEO' && (
-                              <span className="flex items-center gap-1">
-                                <Video weight="bold" size={12} />
-                                Video
-                              </span>
-                            )}
-                            {conversation.lastMessage.type === 'VOICE' && (
-                              <span className="flex items-center gap-1">
-                                <Microphone weight="bold" size={12} />
-                                Voice Message
-                              </span>
-                            )}
-                            {conversation.lastMessage.type === 'TEXT' && conversation.lastMessage.content}
-                          </p>
-                          
-                          {/* Read Status */}
-                          {conversation.lastMessage.senderId === "me" && (
-                            <div className="flex-shrink-0">
-                              {conversation.lastMessage.isRead ? (
-                                <Checks weight="bold" size={14} className="text-blue-400" />
-                              ) : (
-                                <Check weight="bold" size={14} className="text-neutral-500" />
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </div>
-
-                      {/* Tags & Features */}
-                      <div className="flex items-center gap-2 mt-2">
-                        {/* Compatibility */}
-                        <div className="flex items-center gap-1 px-2 py-1 bg-brand-500/10 border border-brand-500/20 rounded-full">
-                          <Heart weight="fill" size={10} className="text-brand-500" />
-                          <span className="text-xs text-brand-500 font-medium">
-                            {conversation.compatibility}%
-                          </span>
-                        </div>
-
-                        {/* Premium Features */}
-                        {conversation.premiumFeatures.includes("Read Receipts") && (
-                          <div className="flex items-center gap-1 px-2 py-1 bg-blue-500/10 border border-blue-500/20 rounded-full">
-                            <Eye weight="fill" size={10} className="text-blue-400" />
-                            <span className="text-xs text-blue-400">Read</span>
-                          </div>
-                        )}
-
-                        {conversation.premiumFeatures.includes("Video Call Available") && (
-                          <div className="flex items-center gap-1 px-2 py-1 bg-green-500/10 border border-green-500/20 rounded-full">
-                            <Video weight="fill" size={10} className="text-green-400" />
-                            <span className="text-xs text-green-400">Video</span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-
-        {/* Empty State */}
-        {sortedConversations.length === 0 && (
-          <div className="text-center py-20 px-6">
-            <div className="w-16 h-16 mx-auto bg-neutral-800 rounded-full flex items-center justify-center mb-4">
-              <MagnifyingGlass weight="thin" size={32} className="text-neutral-600" />
-            </div>
-            <h3 className="text-xl font-light text-white mb-2">
-              {searchQuery || selectedFilter !== "ALL" ? "No conversations found" : "No messages yet"}
-            </h3>
-            <p className="text-neutral-500 font-light mb-6">
-              {searchQuery || selectedFilter !== "ALL" 
-                ? "Try adjusting your search or filters"
-                : "Start a conversation with your matches"
-              }
+        {filteredConversations.length > 0 ? (
+          <div>
+            {filteredConversations.map((conversation) => (
+              <ConversationItem key={conversation.id} conversation={conversation} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-12 px-6">
+            <ChatCircle weight="thin" size={64} className="text-neutral-600 mx-auto mb-4" />
+            <h3 className="text-white font-medium mb-2">No conversations found</h3>
+            <p className="text-neutral-400 text-sm mb-6">
+              {searchQuery ? 'Try adjusting your search' : 'Start a conversation to connect with the community'}
             </p>
-            {!searchQuery && selectedFilter === "ALL" && (
-              <Link href="/discover">
-                <button className="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-full font-light transition-colors">
-                  Discover People
-                </button>
-              </Link>
-            )}
+            <button className="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white rounded-full transition-colors">
+              Start Conversation
+            </button>
           </div>
         )}
+      </div>
+
+      {/* AI Assistant Hint */}
+      <div className="max-w-md mx-auto px-6 py-6">
+        <div className="bg-gradient-to-r from-purple-500/10 to-blue-500/10 border border-purple-500/20 rounded-2xl p-4">
+          <div className="flex items-start gap-3">
+            <Robot weight="fill" size={24} className="text-purple-400 flex-shrink-0" />
+            <div>
+              <h4 className="text-white font-medium text-sm mb-1">AI Chat Assistant</h4>
+              <p className="text-neutral-300 text-xs mb-3">
+                Get conversation starters, translation help, and personalized suggestions powered by AI.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-xs">
+                  Auto-translate
+                </span>
+                <span className="px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-xs">
+                  Conversation tips
+                </span>
+                <span className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-xs">
+                  Voice to text
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Info */}
+      <div className="max-w-md mx-auto px-6 pb-6">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-4 text-center">
+            <Translate weight="bold" size={24} className="text-brand-400 mx-auto mb-2" />
+            <div className="text-white text-sm font-medium mb-1">Real-time Translation</div>
+            <div className="text-neutral-400 text-xs">Communicate in any language</div>
+          </div>
+          <div className="bg-neutral-900/50 border border-neutral-800 rounded-xl p-4 text-center">
+            <Microphone weight="bold" size={24} className="text-brand-400 mx-auto mb-2" />
+            <div className="text-white text-sm font-medium mb-1">Voice Messages</div>
+            <div className="text-neutral-400 text-xs">Send voice recordings</div>
+          </div>
+        </div>
       </div>
     </div>
   );
