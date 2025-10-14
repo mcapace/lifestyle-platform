@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import CommunityCard from '../../components/cards/CommunityCard';
 import { useNavigation } from '@react-navigation/native';
 
@@ -76,7 +77,7 @@ export default function CommunitiesScreen() {
 
       {/* Search */}
       <View style={styles.searchContainer}>
-        <Text style={styles.searchIcon}>🔍</Text>
+        <Feather name="search" size={18} color="#6b7280" style={{ marginRight: 8 }} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search communities..."
@@ -125,7 +126,7 @@ export default function CommunitiesScreen() {
 
         {filteredCommunities.length === 0 && (
           <View style={styles.emptyState}>
-            <Text style={styles.emptyIcon}>🌐</Text>
+            <Feather name="globe" size={64} color="#2a2a2a" />
             <Text style={styles.emptyTitle}>No communities found</Text>
             <Text style={styles.emptyText}>
               {searchQuery ? 'Try adjusting your search' : 'Be the first to create a community!'}
@@ -179,10 +180,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingHorizontal: 16,
   },
-  searchIcon: {
-    fontSize: 18,
-    marginRight: 8,
-  },
   searchInput: {
     flex: 1,
     paddingVertical: 12,
@@ -227,9 +224,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
   },
   emptyIcon: {
-    fontSize: 64,
     marginBottom: 16,
-    opacity: 0.3,
   },
   emptyTitle: {
     fontSize: 18,

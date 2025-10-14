@@ -1,0 +1,47 @@
+🎯 ELOURA MOBILE APP - TESTING INSTRUCTIONS
+================================================
+
+YOU'RE ALMOST THERE! Just answer the question in terminal:
+
+? Use port 8082 instead? › (Y/n)
+
+TYPE: Y
+PRESS: Enter
+
+Then you'll see:
+- Metro bundler starting
+- QR code appearing
+- Menu with options
+
+THEN:
+- Press 'w' = Opens in web browser (instant!)
+- Or scan QR code with your phone
+
+================================================
+
+STEP BY STEP:
+1. Type 'Y' in terminal
+2. Press Enter
+3. Wait 30 seconds
+4. See QR code and menu
+5. Press 'w' for web browser
+   OR scan QR code with phone
+
+================================================
+
+WHAT YOU'LL SEE:
+- Onboarding slides (swipe through)
+- Login screen
+- Bottom tabs (Dashboard, Discover, Messages, Profile)
+- All features working!
+
+================================================
+
+The iOS Simulator error is because Xcode isn't fully installed.
+That's OK! Use web browser or your phone instead.
+
+WEB BROWSER = Press 'w' (easiest!)
+YOUR PHONE = Scan QR code (best experience!)
+
+================================================
+

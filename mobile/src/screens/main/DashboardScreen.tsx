@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Avatar from '../../components/ui/Avatar';
@@ -26,15 +27,15 @@ export default function DashboardScreen() {
   };
 
   const trendingCommunities = [
-    { id: '1', name: 'Miami Lifestyle Explorers', icon: '🌴', members: 1247 },
-    { id: '2', name: 'Wellness & Mindfulness', icon: '🧘‍♀️', members: 892 },
-    { id: '3', name: 'Creative Arts', icon: '🎨', members: 654 },
+    { id: '1', name: 'Miami Lifestyle Explorers', iconName: 'globe', iconColor: '#10b981', members: 1247 },
+    { id: '2', name: 'Wellness & Mindfulness', iconName: 'heart', iconColor: '#ec4899', members: 892 },
+    { id: '3', name: 'Creative Arts', iconName: 'aperture', iconColor: '#8b5cf6', members: 654 },
   ];
 
   const achievements = [
-    { id: '1', name: 'Lifestyle Explorer', icon: '🗺️', unlocked: true },
-    { id: '2', name: 'Social Connector', icon: '🤝', unlocked: true },
-    { id: '3', name: 'Community Leader', icon: '👑', unlocked: false, progress: 30 },
+    { id: '1', name: 'Lifestyle Explorer', iconName: 'compass', iconColor: '#10b981', unlocked: true },
+    { id: '2', name: 'Social Connector', iconName: 'users', iconColor: '#3b82f6', unlocked: true },
+    { id: '3', name: 'Community Leader', iconName: 'award', iconColor: '#f59e0b', unlocked: false, progress: 30 },
   ];
 
   return (
@@ -52,16 +53,20 @@ export default function DashboardScreen() {
         {/* Tabs */}
         <View style={styles.tabs}>
           {[
-            { id: 'discover', label: 'Discover', icon: '🔍' },
-            { id: 'community', label: 'Community', icon: '🌐' },
-            { id: 'events', label: 'Events', icon: '🎉' },
+            { id: 'discover', label: 'Discover', iconName: 'compass' },
+            { id: 'community', label: 'Community', iconName: 'globe' },
+            { id: 'events', label: 'Events', iconName: 'calendar' },
           ].map((tab) => (
             <TouchableOpacity
               key={tab.id}
               style={[styles.tab, activeTab === tab.id && styles.activeTab]}
               onPress={() => setActiveTab(tab.id as typeof activeTab)}
             >
-              <Text style={styles.tabIcon}>{tab.icon}</Text>
+              <Feather 
+                name={tab.iconName as any} 
+                size={16} 
+                color={activeTab === tab.id ? '#ffffff' : '#9ca3af'} 
+              />
               <Text style={[styles.tabText, activeTab === tab.id && styles.activeTabText]}>
                 {tab.label}
               </Text>
@@ -133,7 +138,9 @@ export default function DashboardScreen() {
           <Text style={styles.sectionTitle}>🔥 Trending Communities</Text>
           {trendingCommunities.map((community) => (
             <TouchableOpacity key={community.id} style={styles.communityItem}>
-              <Text style={styles.communityIcon}>{community.icon}</Text>
+              <View style={[styles.communityIconContainer, { backgroundColor: community.iconColor + '20' }]}>
+                <Feather name={community.iconName as any} size={24} color={community.iconColor} />
+              </View>
               <View style={styles.communityInfo}>
                 <Text style={styles.communityName}>{community.name}</Text>
                 <Text style={styles.communityMembers}>
@@ -151,17 +158,31 @@ export default function DashboardScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>🏆 Your Achievements</Text>
           {achievements.map((achievement) => (
-            <Card key={achievement.id} style={styles.achievementCard}>
+            <Card key={achievement.id} style={[
+              styles.achievementCard,
+              achievement.unlocked && { backgroundColor: achievement.iconColor + '10', borderColor: achievement.iconColor + '30' }
+            ]}>
               <View style={styles.achievementContent}>
-                <Text style={[styles.achievementIcon, !achievement.unlocked && styles.locked]}>
-                  {achievement.icon}
-                </Text>
+                <View style={[
+                  styles.achievementIconContainer,
+                  { backgroundColor: achievement.iconColor + '20' },
+                  !achievement.unlocked && styles.locked
+                ]}>
+                  <Feather 
+                    name={achievement.iconName as any} 
+                    size={28} 
+                    color={achievement.iconColor} 
+                  />
+                </View>
                 <View style={styles.achievementInfo}>
                   <Text style={[styles.achievementName, !achievement.unlocked && styles.achievementNameLocked]}>
                     {achievement.name}
                   </Text>
                   {achievement.unlocked && (
-                    <Text style={styles.unlocked}>✅ Unlocked</Text>
+                    <View style={styles.unlockedBadge}>
+                      <Feather name="check-circle" size={14} color="#10b981" />
+                      <Text style={styles.unlocked}> Unlocked</Text>
+                    </View>
                   )}
                   {!achievement.unlocked && achievement.progress !== undefined && (
                     <>
@@ -228,9 +249,6 @@ const styles = StyleSheet.create({
   activeTab: {
     backgroundColor: '#8b5cf6',
     borderColor: '#8b5cf6',
-  },
-  tabIcon: {
-    fontSize: 16,
   },
   tabText: {
     fontSize: 13,
@@ -356,8 +374,12 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     gap: 12,
   },
-  communityIcon: {
-    fontSize: 32,
+  communityIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   communityInfo: {
     flex: 1,
@@ -391,11 +413,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  achievementIcon: {
-    fontSize: 36,
+  achievementIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   locked: {
     opacity: 0.3,
+  },
+  unlockedBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   achievementInfo: {
     flex: 1,

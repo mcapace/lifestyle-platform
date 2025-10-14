@@ -1,15 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Platform } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import DashboardScreen from '../screens/main/DashboardScreen';
 import DiscoverScreen from '../screens/main/DiscoverScreen';
 import MessagesScreen from '../screens/main/MessagesScreen';
 import ProfileScreen from '../screens/main/ProfileScreen';
-
-// Icons placeholder - will use react-native-vector-icons or expo-icons
-const TabIcon = ({ focused, name }: { focused: boolean; name: string }) => {
-  return null; // Will implement with actual icons
-};
 
 export type MainTabParamList = {
   Dashboard: undefined;
@@ -46,6 +42,9 @@ export default function MainTabNavigator() {
         component={DashboardScreen}
         options={{
           tabBarLabel: 'Home',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="home" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen 
@@ -53,6 +52,9 @@ export default function MainTabNavigator() {
         component={DiscoverScreen}
         options={{
           tabBarLabel: 'Discover',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="compass" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen 
@@ -60,6 +62,9 @@ export default function MainTabNavigator() {
         component={MessagesScreen}
         options={{
           tabBarLabel: 'Messages',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="message-circle" size={size} color={color} />
+          ),
         }}
       />
       <Tab.Screen 
@@ -67,6 +72,9 @@ export default function MainTabNavigator() {
         component={ProfileScreen}
         options={{
           tabBarLabel: 'Profile',
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="user" size={size} color={color} />
+          ),
         }}
       />
     </Tab.Navigator>

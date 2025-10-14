@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import EventCard from '../../components/cards/EventCard';
 import CommunityCard from '../../components/cards/CommunityCard';
 import Avatar from '../../components/ui/Avatar';
@@ -82,10 +83,10 @@ export default function DiscoverScreen() {
         <Text style={styles.title}>Explore ELOURA</Text>
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.iconButton}>
-            <Text>🔍</Text>
+            <Feather name="search" size={20} color="#9ca3af" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
-            <Text>⚙️</Text>
+            <Feather name="sliders" size={20} color="#9ca3af" />
           </TouchableOpacity>
         </View>
       </View>
@@ -93,16 +94,20 @@ export default function DiscoverScreen() {
       {/* Tabs */}
       <View style={styles.tabs}>
         {[
-          { id: 'people', label: 'People', icon: '👥' },
-          { id: 'communities', label: 'Communities', icon: '🌐' },
-          { id: 'events', label: 'Events', icon: '📅' },
+          { id: 'people', label: 'People', iconName: 'users' },
+          { id: 'communities', label: 'Communities', iconName: 'globe' },
+          { id: 'events', label: 'Events', iconName: 'calendar' },
         ].map((tab) => (
           <TouchableOpacity
             key={tab.id}
             style={[styles.tab, activeTab === tab.id && styles.activeTab]}
             onPress={() => setActiveTab(tab.id as typeof activeTab)}
           >
-            <Text style={styles.tabIcon}>{tab.icon}</Text>
+            <Feather 
+              name={tab.iconName as any} 
+              size={16} 
+              color={activeTab === tab.id ? '#ffffff' : '#9ca3af'} 
+            />
             <Text style={[styles.tabText, activeTab === tab.id && styles.activeTabText]}>
               {tab.label}
             </Text>
@@ -227,9 +232,6 @@ const styles = StyleSheet.create({
   activeTab: {
     backgroundColor: '#8b5cf6',
     borderColor: '#8b5cf6',
-  },
-  tabIcon: {
-    fontSize: 16,
   },
   tabText: {
     fontSize: 13,
