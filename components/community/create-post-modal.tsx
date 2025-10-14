@@ -9,14 +9,14 @@ import {
   Smiley,
   Hash,
   At,
-  Bold,
-  Italic,
+  TextB,
+  TextItalic,
   Link,
   PaperPlane,
   Eye,
   EyeSlash,
   Lock,
-  Pin,
+  PushPin,
   Users,
   Globe,
   Calendar,
@@ -26,7 +26,7 @@ import {
   Trash,
   Check,
   Warning,
-  Settings
+  Gear
 } from "@phosphor-icons/react";
 import { useHaptics } from "@/lib/haptics/advanced-feedback";
 
@@ -217,12 +217,12 @@ export default function CreatePostModal({
                 <p className="text-neutral-400 text-sm">in {communityName}</p>
               </div>
               <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setShowAdvanced(!showAdvanced)}
-                  className="p-2 text-neutral-400 hover:text-white transition-colors"
-                >
-                  <Settings weight="bold" size={20} />
-                </button>
+              <button
+                onClick={() => setShowAdvanced(!showAdvanced)}
+                className="p-2 text-neutral-400 hover:text-white transition-colors"
+              >
+                <Gear weight="bold" size={20} />
+              </button>
                 <button
                   onClick={handleClose}
                   className="p-2 text-neutral-400 hover:text-white transition-colors"
@@ -254,18 +254,18 @@ export default function CreatePostModal({
                 
                 {/* Formatting Toolbar */}
                 <div className="flex items-center gap-2 mb-3 p-2 bg-neutral-800 rounded-lg">
-                  <button
-                    onClick={() => formatText('bold')}
-                    className="p-2 text-neutral-400 hover:text-white transition-colors"
-                  >
-                    <Bold weight="bold" size={16} />
-                  </button>
-                  <button
-                    onClick={() => formatText('italic')}
-                    className="p-2 text-neutral-400 hover:text-white transition-colors"
-                  >
-                    <Italic weight="bold" size={16} />
-                  </button>
+                <button
+                  onClick={() => formatText('bold')}
+                  className="p-2 text-neutral-400 hover:text-white transition-colors"
+                >
+                  <TextB weight="bold" size={16} />
+                </button>
+                <button
+                  onClick={() => formatText('italic')}
+                  className="p-2 text-neutral-400 hover:text-white transition-colors"
+                >
+                  <TextItalic weight="bold" size={16} />
+                </button>
                   <button
                     onClick={() => formatText('link')}
                     className="p-2 text-neutral-400 hover:text-white transition-colors"
@@ -453,7 +453,7 @@ export default function CreatePostModal({
                         onChange={(e) => setDraft(prev => ({ ...prev, isPinned: e.target.checked }))}
                         className="text-brand-500"
                       />
-                      <Pin weight="bold" size={16} className="text-neutral-400" />
+                      <PushPin weight="bold" size={16} className="text-neutral-400" />
                       <span className="text-white text-sm">Pin this post</span>
                     </label>
                     

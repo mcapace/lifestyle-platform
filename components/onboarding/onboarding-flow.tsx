@@ -20,10 +20,10 @@ import {
   Globe,
   Coffee,
   Palette,
-  Music,
+  MusicNotes,
   Book,
   Airplane,
-  Dumbbell,
+  Barbell,
   Users,
   Wine,
   GameController,
@@ -73,11 +73,11 @@ interface OnboardingData {
 }
 
 const INTERESTS_OPTIONS = [
-  { id: 'wellness', label: 'Wellness & Fitness', icon: Dumbbell, color: 'green' },
+  { id: 'wellness', label: 'Wellness & Fitness', icon: Barbell, color: 'green' },
   { id: 'travel', label: 'Travel & Adventure', icon: Airplane, color: 'blue' },
   { id: 'food', label: 'Food & Wine', icon: Wine, color: 'amber' },
   { id: 'arts', label: 'Arts & Culture', icon: Palette, color: 'purple' },
-  { id: 'music', label: 'Music & Events', icon: Music, color: 'pink' },
+  { id: 'music', label: 'Music & Events', icon: MusicNotes, color: 'pink' },
   { id: 'nightlife', label: 'Nightlife', icon: Coffee, color: 'orange' },
   { id: 'reading', label: 'Reading & Learning', icon: Book, color: 'indigo' },
   { id: 'business', label: 'Business & Networking', icon: Briefcase, color: 'slate' },

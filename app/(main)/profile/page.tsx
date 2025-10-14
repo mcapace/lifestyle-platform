@@ -12,7 +12,7 @@ import {
   Users,
   Sparkle,
   Shield,
-  Settings,
+  Gear,
   Share,
   Plus,
   Trophy,
@@ -23,10 +23,10 @@ import {
   Eye,
   Pen,
   Image as ImageIcon,
-  MusicNote,
+  MusicNotes,
   Airplane,
   Coffee,
-  Dumbbell,
+  Barbell,
   Book,
   Palette,
   Wine,
@@ -104,11 +104,11 @@ const mockProfile: UserProfile = {
 };
 
 const INTEREST_CONFIG: Record<string, { icon: any; color: string; label: string }> = {
-  wellness: { icon: Dumbbell, color: 'green', label: 'Wellness & Fitness' },
+  wellness: { icon: Barbell, color: 'green', label: 'Wellness & Fitness' },
   travel: { icon: Airplane, color: 'blue', label: 'Travel & Adventure' },
   arts: { icon: Palette, color: 'purple', label: 'Arts & Culture' },
   food: { icon: Wine, color: 'amber', label: 'Food & Wine' },
-  music: { icon: MusicNote, color: 'pink', label: 'Music & Events' },
+  music: { icon: MusicNotes, color: 'pink', label: 'Music & Events' },
   nightlife: { icon: Coffee, color: 'orange', label: 'Nightlife' },
   reading: { icon: Book, color: 'indigo', label: 'Reading & Learning' },
   business: { icon: Briefcase, color: 'slate', label: 'Business & Networking' }
@@ -143,8 +143,8 @@ export default function ProfilePage() {
               <button className="p-2 text-neutral-400 hover:text-white transition-colors">
                 <Share weight="bold" size={20} />
               </button>
-              <Link href="/settings" className="p-2 text-neutral-400 hover:text-white transition-colors">
-                <Settings weight="bold" size={20} />
+            <Link href="/settings" className="p-2 text-neutral-400 hover:text-white transition-colors">
+              <Gear weight="bold" size={20} />
             </Link>
             </div>
           </div>

@@ -6,7 +6,7 @@ import {
   ArrowLeft,
   ShareNetwork,
   Bell,
-  Settings,
+  Gear,
   Plus,
   Heart,
   Chat,
@@ -23,8 +23,8 @@ import {
   Clock,
   Tag,
   TrendingUp,
-  MoreHorizontal,
-  Pin,
+  DotsThree,
+  PushPin,
   Lock as LockIcon,
   CheckCircle
 } from "@phosphor-icons/react";
@@ -249,15 +249,15 @@ export default function CommunityDetailPage() {
           <p className="text-neutral-400 text-sm">{post.createdAt}</p>
         </div>
         <div className="flex items-center gap-2">
-          {post.isPinned && (
-            <Pin weight="fill" size={16} className="text-amber-400" />
-          )}
+            {post.isPinned && (
+              <PushPin weight="fill" size={16} className="text-amber-400" />
+            )}
           {post.isLocked && (
             <LockIcon weight="bold" size={16} className="text-neutral-400" />
           )}
-          <button className="p-2 text-neutral-400 hover:text-white transition-colors">
-            <MoreHorizontal weight="bold" size={16} />
-          </button>
+            <button className="p-2 text-neutral-400 hover:text-white transition-colors">
+              <DotsThree weight="bold" size={16} />
+            </button>
         </div>
       </div>
       
@@ -371,11 +371,11 @@ export default function CommunityDetailPage() {
           <button className="p-2 text-neutral-400 hover:text-white transition-colors">
             <Chat weight="regular" size={16} />
           </button>
-          {member.isModerator && (
-            <button className="p-2 text-neutral-400 hover:text-white transition-colors">
-              <Settings weight="regular" size={16} />
-            </button>
-          )}
+              {member.isModerator && (
+                <button className="p-2 text-neutral-400 hover:text-white transition-colors">
+                  <Gear weight="regular" size={16} />
+                </button>
+              )}
         </div>
       </div>
     </motion.div>
@@ -400,7 +400,7 @@ export default function CommunityDetailPage() {
               </button>
               {mockCommunity.isModerator && (
                 <button className="p-2 text-neutral-400 hover:text-white transition-colors">
-                  <Settings weight="bold" size={20} />
+                  <Gear weight="bold" size={20} />
                 </button>
               )}
             </div>

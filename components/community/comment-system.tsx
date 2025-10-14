@@ -6,11 +6,11 @@ import {
   Heart,
   Chat,
   ShareNetwork,
-  Reply,
-  MoreHorizontal,
+  ArrowBendUpLeft,
+  DotsThree,
   Flag,
   Trash,
-  Edit,
+  PencilSimple,
   Crown,
   Star,
   Clock,
@@ -235,13 +235,13 @@ export default function CommentSystem({
                 onClick={() => setReplyingTo(comment.id)}
                 className="flex items-center gap-1 text-xs text-neutral-400 hover:text-blue-400 transition-colors"
               >
-                <Reply weight="regular" size={14} />
+                <ArrowBendUpLeft weight="regular" size={14} />
                 Reply
               </button>
             )}
             
             <button className="p-1 text-neutral-400 hover:text-white transition-colors">
-              <MoreHorizontal weight="bold" size={14} />
+              <DotsThree weight="bold" size={14} />
             </button>
           </div>
 
