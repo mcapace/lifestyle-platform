@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import Button from '../ui/Button';
 
 interface Community {
   id: string;
   name: string;
   description: string;
-  icon: string;
+  icon?: string;
+  iconName?: string;
+  iconColor?: string;
   members: number;
   posts: number;
   category: string;
@@ -24,11 +27,17 @@ export default function CommunityCard({ community, onPress, onJoin }: CommunityC
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.8}>
       <View style={styles.header}>
-        <Text style={styles.icon}>{community.icon}</Text>
+        <View style={[styles.iconContainer, { backgroundColor: (community.iconColor || '#8b5cf6') + '20' }]}>
+          {community.icon ? (
+            <Text style={styles.icon}>{community.icon}</Text>
+          ) : (
+            <Feather name={community.iconName as any || 'globe'} size={28} color={community.iconColor || '#8b5cf6'} />
+          )}
+        </View>
         <View style={styles.headerInfo}>
           <View style={styles.titleRow}>
             <Text style={styles.title} numberOfLines={1}>{community.name}</Text>
-            {community.isPremium && <Text style={styles.premium}>👑</Text>}
+            {community.isPremium && <Feather name="award" size={14} color="#f59e0b" />}
           </View>
           <Text style={styles.category}>{community.category}</Text>
         </View>
@@ -71,8 +80,15 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 12,
   },
+  iconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   icon: {
-    fontSize: 40,
+    fontSize: 28,
   },
   headerInfo: {
     flex: 1,
@@ -87,9 +103,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#ffffff',
     flex: 1,
-  },
-  premium: {
-    fontSize: 14,
   },
   category: {
     fontSize: 12,
