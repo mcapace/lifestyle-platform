@@ -12,8 +12,8 @@ const tabs = [
     icon: Compass 
   },
   { 
-    name: "Community", 
-    href: "/dashboard", 
+    name: "Communities", 
+    href: "/communities", 
     icon: Globe 
   },
   { 
