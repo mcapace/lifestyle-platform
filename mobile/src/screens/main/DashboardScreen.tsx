@@ -135,7 +135,10 @@ export default function DashboardScreen() {
 
         {/* Trending Communities */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🔥 Trending Communities</Text>
+          <View style={styles.sectionHeader}>
+            <Feather name="trending-up" size={18} color="#f59e0b" style={{ marginRight: 8 }} />
+            <Text style={styles.sectionTitle}>Trending Communities</Text>
+          </View>
           {trendingCommunities.map((community) => (
             <TouchableOpacity key={community.id} style={styles.communityItem}>
               <View style={[styles.communityIconContainer, { backgroundColor: community.iconColor + '20' }]}>
@@ -156,7 +159,10 @@ export default function DashboardScreen() {
 
         {/* Achievements */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🏆 Your Achievements</Text>
+          <View style={styles.sectionHeader}>
+            <Feather name="award" size={18} color="#f59e0b" style={{ marginRight: 8 }} />
+            <Text style={styles.sectionTitle}>Your Achievements</Text>
+          </View>
           {achievements.map((achievement) => (
             <Card key={achievement.id} style={[
               styles.achievementCard,
@@ -357,11 +363,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     marginBottom: 24,
   },
+  sectionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
     color: '#ffffff',
-    marginBottom: 16,
   },
   communityItem: {
     flexDirection: 'row',

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   TextInput,
 } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 import EventCard from '../../components/cards/EventCard';
 
 export default function EventsScreen() {
@@ -80,7 +81,7 @@ export default function EventsScreen() {
 
       {/* Search */}
       <View style={styles.searchContainer}>
-        <Text style={styles.searchIcon}>🔍</Text>
+        <Feather name="search" size={18} color="#6b7280" style={{ marginRight: 8 }} />
         <TextInput
           style={styles.searchInput}
           placeholder="Search events..."
@@ -168,10 +169,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
     marginBottom: 16,
     paddingHorizontal: 16,
-  },
-  searchIcon: {
-    fontSize: 18,
-    marginRight: 8,
   },
   searchInput: {
     flex: 1,
