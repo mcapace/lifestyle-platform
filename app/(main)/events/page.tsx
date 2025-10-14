@@ -18,7 +18,7 @@ import {
   Crown,
   CheckCircle,
   Ticket,
-  TrendingUp,
+  TrendUp,
   Lightning,
   BookmarkSimple,
   Export
@@ -161,7 +161,7 @@ export default function EventsPage() {
     { id: 'wellness', label: 'Wellness', icon: Heart },
     { id: 'food', label: 'Food & Wine', icon: Star },
     { id: 'culture', label: 'Culture', icon: BookmarkSimple },
-    { id: 'business', label: 'Business', icon: TrendingUp }
+    { id: 'business', label: 'Business', icon: TrendUp }
   ];
 
   const filteredEvents = mockEvents.filter(event => {
