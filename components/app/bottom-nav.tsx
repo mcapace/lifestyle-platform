@@ -2,19 +2,19 @@
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { MagnifyingGlass, ChatCircle, User, Sparkle } from "@phosphor-icons/react";
+import { Compass, Users, ChatCircle, User, Globe } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 
 const tabs = [
   { 
     name: "Discover", 
     href: "/discover", 
-    icon: MagnifyingGlass 
+    icon: Compass 
   },
   { 
-    name: "Matches", 
-    href: "/matches", 
-    icon: Sparkle 
+    name: "Community", 
+    href: "/dashboard", 
+    icon: Globe 
   },
   { 
     name: "Messages", 
