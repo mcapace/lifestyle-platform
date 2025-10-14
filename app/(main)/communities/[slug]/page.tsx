@@ -30,6 +30,8 @@ import {
 } from "@phosphor-icons/react";
 import Image from "next/image";
 import Link from "next/link";
+import CreatePostModal from "@/components/community/create-post-modal";
+import CommentSystem from "@/components/community/comment-system";
 
 interface CommunityMember {
   id: string;
@@ -198,6 +200,25 @@ const mockPosts: CommunityPost[] = [
 export default function CommunityDetailPage() {
   const [activeTab, setActiveTab] = useState<'posts' | 'members' | 'rules'>('posts');
   const [showCreatePost, setShowCreatePost] = useState(false);
+  const [posts, setPosts] = useState<CommunityPost[]>(mockPosts);
+  const [selectedPost, setSelectedPost] = useState<string | null>(null);
+
+  const handlePostCreated = (newPost: CommunityPost) => {
+    setPosts(prev => [newPost, ...prev]);
+  };
+
+  const handleCommentAdded = (postId: string, comment: any) => {
+    setPosts(prev => prev.map(post => 
+      post.id === postId 
+        ? { ...post, comments: post.comments + 1 }
+        : post
+    ));
+  };
+
+  const handleCommentLiked = (postId: string, commentId: string) => {
+    // In a real app, this would update the comment's like status
+    console.log('Comment liked:', commentId);
+  };
 
   const PostCard = ({ post }: { post: CommunityPost }) => (
     <motion.div
@@ -272,7 +293,10 @@ export default function CommunityDetailPage() {
             <Heart weight={post.isLiked ? "fill" : "regular"} size={18} />
             <span className="text-sm">{post.likes}</span>
           </button>
-          <button className="flex items-center gap-2 text-neutral-400 hover:text-blue-400 transition-colors">
+          <button 
+            onClick={() => setSelectedPost(selectedPost === post.id ? null : post.id)}
+            className="flex items-center gap-2 text-neutral-400 hover:text-blue-400 transition-colors"
+          >
             <Chat weight="regular" size={18} />
             <span className="text-sm">{post.comments}</span>
           </button>
@@ -293,6 +317,25 @@ export default function CommunityDetailPage() {
           </button>
         </div>
       </div>
+
+      {/* Comments Section */}
+      {selectedPost === post.id && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          className="mt-4 pt-4 border-t border-neutral-800"
+        >
+          <CommentSystem
+            postId={post.id}
+            comments={[]} // In a real app, this would come from the post data
+            onCommentAdded={(comment) => handleCommentAdded(post.id, comment)}
+            onCommentLiked={(commentId) => handleCommentLiked(post.id, commentId)}
+            onCommentDeleted={() => {}}
+            isLocked={post.isLocked}
+          />
+        </motion.div>
+      )}
     </motion.div>
   );
 
@@ -493,7 +536,7 @@ export default function CommunityDetailPage() {
 
               {/* Posts */}
               <div className="space-y-4">
-                {mockPosts.map((post) => (
+                {posts.map((post) => (
                   <PostCard key={post.id} post={post} />
                 ))}
               </div>
@@ -569,44 +612,14 @@ export default function CommunityDetailPage() {
         </AnimatePresence>
       </div>
 
-      {/* Create Post Modal (Placeholder) */}
-      {showCreatePost && (
-        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-6">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 w-full max-w-md"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-white font-medium">Create Post</h3>
-              <button 
-                onClick={() => setShowCreatePost(false)}
-                className="text-neutral-400 hover:text-white transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-            <p className="text-neutral-400 text-sm mb-6">
-              Post creation feature coming soon! This will include text, images, and community-specific formatting.
-            </p>
-            <div className="flex gap-3">
-              <button 
-                onClick={() => setShowCreatePost(false)}
-                className="flex-1 px-4 py-2 bg-neutral-800 text-neutral-300 rounded-full transition-colors"
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={() => setShowCreatePost(false)}
-                className="flex-1 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white rounded-full transition-colors"
-              >
-                Coming Soon
-              </button>
-            </div>
-          </motion.div>
-        </div>
-      )}
+      {/* Create Post Modal */}
+      <CreatePostModal
+        isOpen={showCreatePost}
+        onClose={() => setShowCreatePost(false)}
+        communityId={mockCommunity.id}
+        communityName={mockCommunity.name}
+        onPostCreated={handlePostCreated}
+      />
     </div>
   );
 }
