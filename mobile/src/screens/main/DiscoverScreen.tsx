@@ -9,27 +9,55 @@ import {
   TextInput,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import SwipeableCardStack from '../../components/cards/SwipeableCardStack';
 import EventCard from '../../components/cards/EventCard';
 import CommunityCard from '../../components/cards/CommunityCard';
+import { FloatingActionButton } from '../../components/ui/LoadingAnimations';
+import { SlideUpActionSheet } from '../../components/ui/AnimatedModal';
 import Avatar from '../../components/ui/Avatar';
 import Badge from '../../components/ui/Badge';
 
 export default function DiscoverScreen() {
   const [activeTab, setActiveTab] = useState<'people' | 'communities' | 'events'>('people');
   const [searchQuery, setSearchQuery] = useState('');
+  const [showActionSheet, setShowActionSheet] = useState(false);
 
   const mockPeople = [
     {
       id: '1',
-      name: 'Sophia & Liam',
-      age: '30 & 33',
+      name: 'Sophia',
+      age: 30,
       location: 'Miami, FL',
       distance: '5 miles away',
-      avatar: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400',
-      bio: 'Passionate about wellness and cultural exploration.',
+      image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+      bio: 'Passionate about wellness and cultural exploration. Love discovering hidden gems in the city.',
       interests: ['Yoga', 'Art', 'Travel', 'Dining'],
       verified: true,
-      score: 92,
+      lifestyleScore: 92,
+    },
+    {
+      id: '2',
+      name: 'Marcus',
+      age: 28,
+      location: 'Miami, FL',
+      distance: '3 miles away',
+      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800',
+      bio: 'Tech entrepreneur with a love for adventure sports and fine dining.',
+      interests: ['Technology', 'Surfing', 'Wine', 'Networking'],
+      verified: true,
+      lifestyleScore: 88,
+    },
+    {
+      id: '3',
+      name: 'Elena',
+      age: 32,
+      location: 'Miami, FL',
+      distance: '7 miles away',
+      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=800',
+      bio: 'Art curator and lifestyle enthusiast. Always exploring new cultural experiences.',
+      interests: ['Art', 'Museums', 'Cocktails', 'Fashion'],
+      verified: true,
+      lifestyleScore: 95,
     },
   ];
 
@@ -176,7 +204,43 @@ export default function DiscoverScreen() {
         )}
 
         <View style={{ height: 24 }} />
-      </ScrollView>
+      </View>
+
+      {/* Floating Action Button */}
+      <FloatingActionButton
+        onPress={() => setShowActionSheet(true)}
+        icon="filter"
+        color="#8b5cf6"
+      />
+
+      {/* Action Sheet */}
+      <SlideUpActionSheet
+        visible={showActionSheet}
+        onClose={() => setShowActionSheet(false)}
+        title="Filter Options"
+        actions={[
+          {
+            title: 'Age Range',
+            icon: 'calendar',
+            onPress: () => console.log('Age filter'),
+          },
+          {
+            title: 'Distance',
+            icon: 'map-pin',
+            onPress: () => console.log('Distance filter'),
+          },
+          {
+            title: 'Interests',
+            icon: 'heart',
+            onPress: () => console.log('Interests filter'),
+          },
+          {
+            title: 'Lifestyle Score',
+            icon: 'trending-up',
+            onPress: () => console.log('Score filter'),
+          },
+        ]}
+      />
     </SafeAreaView>
   );
 }
@@ -242,6 +306,48 @@ const styles = StyleSheet.create({
   },
   activeTabText: {
     color: '#ffffff',
+  },
+  swipeContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  actionButtons: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 24,
+    gap: 32,
+  },
+  passButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(239, 68, 68, 0.2)',
+    borderWidth: 2,
+    borderColor: '#ef4444',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  superLikeButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+    borderWidth: 2,
+    borderColor: '#3b82f6',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  likeButton: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: 'rgba(16, 185, 129, 0.2)',
+    borderWidth: 2,
+    borderColor: '#10b981',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   content: {
     flex: 1,
